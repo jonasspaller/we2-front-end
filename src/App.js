@@ -1,6 +1,5 @@
-import './App.css';
-import PublicPage from './components/PublicPage';
-import TopMenu from './components/TopMenu';
+import PublicPage from './components/PublicPage'
+import TopMenu from './components/TopMenu'
 
 function App() {
 	return (
@@ -11,4 +10,4 @@ function App() {
 	);
 }
 
-export default App;
+export default App

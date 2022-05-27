@@ -1,11 +1,12 @@
 import React, {Component} from "react"
+import LoginButton from './LoginButton'
 
 class PublicPage extends Component {
 
 	render(){
 		return(
 			<main>
-				Public Page
+				<LoginButton />
 			</main>
 		)
 	}

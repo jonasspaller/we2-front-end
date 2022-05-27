@@ -1,30 +1,10 @@
 import React, { Component } from "react"
-import { Navbar, Container, Nav, NavDropdown, Button, Modal, Form } from "react-bootstrap"
+import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap"
+import UserSessionWidget from './UserSessionWidget'
 
 class TopMenu extends Component {
 
-	initialState = {
-		showLoginModal: false,
-		username: '',
-		password: ''
-	}
-
-	state = this.initialState
-
-	handleOpen = () => this.setState({ showLoginModal: true })
-	handleClose = () => this.setState({ showLoginModal: false })
-
-	handleChange = event => {
-		const { name, value } = event.target
-		this.setState({
-			[name]: value,
-		})
-	}
-
 	render() {
-
-		const { username, password } = this.state;
-
 		return (
 			<>
 				<Navbar bg="light" expand="lg">
@@ -43,39 +23,10 @@ class TopMenu extends Component {
 									<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
 								</NavDropdown>
 							</Nav>
-							<Button id="OpenLoginDialogButton" variant="outline-primary" onClick={this.handleOpen}>
-								Login
-							</Button>
+							<UserSessionWidget />
 						</Navbar.Collapse>
 					</Container>
 				</Navbar>
-
-				<Modal show={this.state.showLoginModal} onHide={this.handleClose} centered>
-
-					<Modal.Body>
-						<Form>
-							<Form.Group>
-								<Form.Label>Username</Form.Label>
-								<Form.Control type="text" name="username" placeholder="Username" value={username} onChange={this.handleChange} />
-								<Form.Text className="text-muted">
-									{this.state.username}
-								</Form.Text>
-							</Form.Group>
-							<Form.Group>
-								<Form.Label>Password</Form.Label>
-								<Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
-								<Form.Text className="text-muted">
-									{this.state.password}
-								</Form.Text>
-							</Form.Group>
-						</Form>
-					</Modal.Body>
-
-					<Modal.Footer>
-						<Button variant="secondary" onClick={this.handleClose}>Close</Button>
-						<Button variant="primary" onClick={this.handleClose}>Login</Button>
-					</Modal.Footer>
-				</Modal>
 			</>
 		)
 	}
