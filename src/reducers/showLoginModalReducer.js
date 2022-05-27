@@ -1,3 +1,5 @@
+import { SHOW_LOGIN_MODAL } from "../constants/actionTypes"
+
 const initialState = {
 	showLoginModal: false
 }
