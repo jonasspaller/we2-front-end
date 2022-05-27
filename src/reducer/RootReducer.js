@@ -9,6 +9,8 @@ const initialState = {
 
 function rootReducer(state = initialState, action){
 
+	console.log("Reducer: " + action.type)
+
 	switch(action.type){
 		case authenticationActions.SHOW_LOGIN_DIALOG:
 			return {
@@ -21,6 +23,25 @@ function rootReducer(state = initialState, action){
 				...state,
 				showLoginDialog: false,
 				error: null
+			}
+		case authenticationActions.AUTHENTICATION_PENDING:
+			return {
+				...state,
+				pending: true,
+				error: null
+			}
+		case authenticationActions.AUTHENTICATION_SUCCESS:
+			return {
+				...state,
+				showLoginDialog: false,
+				pending: false,
+				accessToken: action.accessToken
+			}
+		case authenticationActions.AUTHENTICATION_ERROR:
+			return {
+				...state,
+				pending: false,
+				error: "Authentication failed"
 			}
 		default:
 			return state

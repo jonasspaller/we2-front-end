@@ -14,21 +14,35 @@ class UserSessionWidget extends Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			show: false
+			userID: '',
+			password: ''
 		}
-		this.handleShow = this.handleShow.bind(this)
-		this.handleClose = this.handleClose.bind(this)
 	}
 
-	handleShow(e){
+	handleShow = (e) => {
 		e.preventDefault()
 		const {showLoginDialogAction} = this.props
 		showLoginDialogAction()
 	}
 
-	handleClose(){
+	handleClose = () => {
 		const {hideLoginDialogAction} = this.props
 		hideLoginDialogAction()
+	}
+
+	handleChange = (e) => {
+		const {name, value} = e.target
+		this.setState({[name]: value})
+	}
+
+	handleSubmit = (e) => {
+		
+		e.preventDefault()
+		
+		const {userID, password} = this.state
+		const {authenticateUserAction} = this.props
+
+		authenticateUserAction(userID, password)
 	}
 
 	render(){
@@ -38,29 +52,40 @@ class UserSessionWidget extends Component {
 			showDialog = false
 		}
 
+		const token = this.props.accessToken
+		let button
+
+		if(!token){
+			button = <Button id="OpenLoginDialogButton" variant="custom" onClick={this.handleShow}>Login</Button>
+		} else {
+			button = <Button id="LogoutButton" variant="custom" type="submit">Logout</Button>
+		}
+
 		return(
 			<>
-				<Button variant="outline-primary" onClick={this.handleShow}>
-					Login
-				</Button>
+				{button}
 
 				<Modal show={showDialog} onHide={this.handleClose} centered>
+					<Modal.Header closeButton>
+						<Modal.Title>
+							Login
+						</Modal.Title>
+					</Modal.Header>
 					<Modal.Body>
 						<Form>
 							<Form.Group>
 								<Form.Label>Username</Form.Label>
-								<Form.Control type="text" name="username" placeholder="Username" />
+								<Form.Control id="LoginUserIDInput" className="mb-3" type="text" name="userID" placeholder="Username" onChange={this.handleChange} />
 							</Form.Group>
 							<Form.Group>
 								<Form.Label>Password</Form.Label>
-								<Form.Control type="password" name="password" placeholder="Password" />
+								<Form.Control id="LoginPasswordInput" type="password" name="password" placeholder="Password" onChange={this.handleChange} />
 							</Form.Group>
 						</Form>
 					</Modal.Body>
 					
 					<Modal.Footer>
-						<Button variant="secondary" onClick={this.handleClose}>Close</Button>
-						<Button variant="primary" onClick={this.handleClose}>Login</Button>
+						<Button id="LoginButton" variant="custom" type="submit" onClick={this.handleSubmit}>Login</Button>
 					</Modal.Footer>
 				</Modal>
 			</>
@@ -70,7 +95,8 @@ class UserSessionWidget extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	showLoginDialogAction: authenticationActions.getShowLoginDialogAction,
-	hideLoginDialogAction: authenticationActions.getHideLoginDialogAction
+	hideLoginDialogAction: authenticationActions.getHideLoginDialogAction,
+	authenticateUserAction: authenticationActions.authenticateUser
 }, dispatch)
 
 const ConnectedUserSessionWidget = connect(mapStateToProps, mapDispatchToProps)(UserSessionWidget)

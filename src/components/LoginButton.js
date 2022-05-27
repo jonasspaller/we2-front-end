@@ -18,7 +18,7 @@ class LoginButton extends Component {
 	render(){
 		return(
 			<div>
-				<Button variant="outline-primary" onClick={this.showLoginDialog}>
+				<Button variant="custom" onClick={this.showLoginDialog}>
 					Login
 				</Button>
 			</div>

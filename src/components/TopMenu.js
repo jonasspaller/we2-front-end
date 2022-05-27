@@ -1,15 +1,18 @@
 import React, { Component } from "react"
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap"
 import UserSessionWidget from './UserSessionWidget'
+import BHTLogo from '../images/BHT_Logo_horizontal_Anthrazit_transparent.svg'
 
 class TopMenu extends Component {
 
 	render() {
 		return (
 			<>
-				<Navbar bg="light" expand="lg">
+				<Navbar bg="light" expand="lg" className="py-0">
 					<Container>
-						<Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+						<Navbar.Brand href="#home">
+							<img width="204" height="60" src={BHTLogo} className="d-inline-block align-center" alt="BHT Logo" />
+						</Navbar.Brand>
 						<Navbar.Toggle aria-controls="basic-navbar-nav" />
 						<Navbar.Collapse id="basic-navbar-nav">
 							<Nav className="me-auto">
@@ -23,8 +26,8 @@ class TopMenu extends Component {
 									<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
 								</NavDropdown>
 							</Nav>
-							<UserSessionWidget />
 						</Navbar.Collapse>
+						<UserSessionWidget />
 					</Container>
 				</Navbar>
 			</>

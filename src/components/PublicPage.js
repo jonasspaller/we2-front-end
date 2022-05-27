@@ -5,9 +5,9 @@ class PublicPage extends Component {
 
 	render(){
 		return(
-			<main>
+			<div className="page-content" id="LandingPage">
 				<LoginButton />
-			</main>
+			</div>
 		)
 	}
 }
