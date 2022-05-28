@@ -26,6 +26,7 @@ export function getAuthenticationPendingAction(){
 export function getAuthenticationSuccessAction(userSession){
 	return {
 		type: AUTHENTICATION_SUCCESS,
+		userID: userSession.userID,
 		accessToken: userSession.accessToken
 	}
 }
@@ -43,6 +44,8 @@ export function authenticateUser(userID, password){
 		login(userID, password)
 		.then(
 			userSession => {
+				// add userID to state store
+				userSession.userID = userID
 				const action = getAuthenticationSuccessAction(userSession)
 				dispatch(action)
 			},
