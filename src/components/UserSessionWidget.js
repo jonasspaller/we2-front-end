@@ -45,6 +45,12 @@ class UserSessionWidget extends Component {
 		authenticateUserAction(userID, password)
 	}
 
+	handleLogout = (e) => {
+		e.preventDefault()
+		const {logoutAction} = this.props
+		logoutAction()
+	}
+
 	render(){
 
 		var showDialog = this.props.showLoginDialog
@@ -58,7 +64,7 @@ class UserSessionWidget extends Component {
 		if(!token){
 			button = <Button id="OpenLoginDialogButton" variant="custom" onClick={this.handleShow}>Login</Button>
 		} else {
-			button = <Button id="LogoutButton" variant="custom" type="submit">Logout</Button>
+			button = <Button id="LogoutButton" variant="custom" onClick={this.handleLogout}>Logout</Button>
 		}
 
 		return(
@@ -96,7 +102,8 @@ class UserSessionWidget extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators({
 	showLoginDialogAction: authenticationActions.getShowLoginDialogAction,
 	hideLoginDialogAction: authenticationActions.getHideLoginDialogAction,
-	authenticateUserAction: authenticationActions.authenticateUser
+	authenticateUserAction: authenticationActions.authenticateUser,
+	logoutAction: authenticationActions.getLogoutUserAction
 }, dispatch)
 
 const ConnectedUserSessionWidget = connect(mapStateToProps, mapDispatchToProps)(UserSessionWidget)

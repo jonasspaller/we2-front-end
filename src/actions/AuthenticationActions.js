@@ -5,6 +5,8 @@ export const AUTHENTICATION_PENDING = "AUTHENTICATION_PENDING"
 export const AUTHENTICATION_SUCCESS = "AUTHENTICATION_SUCCESS"
 export const AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR"
 
+export const LOGOUT_USER = "LOGOUT_USER"
+
 export function getShowLoginDialogAction(){
 	return {
 		type: SHOW_LOGIN_DIALOG
@@ -35,6 +37,12 @@ export function getAuthenticationErrorAction(error){
 	return {
 		type: AUTHENTICATION_ERROR,
 		error: error
+	}
+}
+
+export function getLogoutUserAction(){
+	return {
+		type: LOGOUT_USER
 	}
 }
 
@@ -106,5 +114,7 @@ function handleResponse(response){
 }
 
 function logout(){
-	console.log("Logout")
+	return dispatch => {
+		dispatch(getLogoutUserAction())
+	}
 }

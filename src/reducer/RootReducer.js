@@ -4,6 +4,7 @@ const initialState = {
 	user: null,
 	loginPending: false,
 	showLoginDialog: false,
+	accessToken: null,
 	error: null
 }
 
@@ -43,6 +44,12 @@ function rootReducer(state = initialState, action){
 				...state,
 				pending: false,
 				error: "Authentication failed"
+			}
+		case authenticationActions.LOGOUT_USER:
+			return {
+				...state,
+				user: null,
+				accessToken: null
 			}
 		default:
 			return state
