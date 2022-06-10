@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PublicPage from './components/PublicPage'
 import PrivatePage from './components/PrivatePage'
 import TopMenu from './components/TopMenu'
+import Footer from './components/Footer'
 import './App.css'
 
 const mapStateToProps = state => {
@@ -26,6 +27,7 @@ class App extends Component {
 			<div className="App">
 				<TopMenu />
 				{page}
+				<Footer />
 			</div>
 		)
 	}

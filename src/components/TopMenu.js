@@ -8,8 +8,8 @@ class TopMenu extends Component {
 	render() {
 		return (
 			<>
-				<Navbar bg="light" expand="lg" className="py-0">
-					<Container>
+				<Navbar bg="light" expand="lg" sticky="top">
+					<Container fluid>
 						<Navbar.Brand href="#home">
 							<img width="204" height="60" src={BHTLogo} className="d-inline-block align-center" alt="BHT Logo" />
 						</Navbar.Brand>
