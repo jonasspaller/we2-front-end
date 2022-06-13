@@ -67,6 +67,11 @@ class UserSessionWidget extends Component {
 			button = <Button id="LogoutButton" variant="custom" onClick={this.handleLogout}>Logout</Button>
 		}
 
+		let errorHint
+		if(this.props.error){
+			errorHint = <p className="text-danger">{this.props.error}</p>
+		}
+
 		return(
 			<>
 				{button}
@@ -81,7 +86,7 @@ class UserSessionWidget extends Component {
 						<Form>
 							<Form.Group>
 								<Form.Label>Username</Form.Label>
-								<Form.Control id="LoginUserIDInput" className="mb-3" type="text" name="userID" placeholder="Username" onChange={this.handleChange} />
+								<Form.Control id="LoginUserIDInput" className="mb-3" type="text" name="userID" placeholder="Username" onChange={this.handleChange} autoFocus />
 							</Form.Group>
 							<Form.Group>
 								<Form.Label>Password</Form.Label>
@@ -91,6 +96,7 @@ class UserSessionWidget extends Component {
 					</Modal.Body>
 					
 					<Modal.Footer>
+						{errorHint}
 						<Button id="LoginButton" variant="custom" type="submit" onClick={this.handleSubmit}>Login</Button>
 					</Modal.Footer>
 				</Modal>
@@ -103,7 +109,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	showLoginDialogAction: authenticationActions.getShowLoginDialogAction,
 	hideLoginDialogAction: authenticationActions.getHideLoginDialogAction,
 	authenticateUserAction: authenticationActions.authenticateUser,
-	logoutAction: authenticationActions.getLogoutUserAction
+	logoutAction: authenticationActions.getLogoutUserAction,
+	errorAction: authenticationActions.getAuthenticationErrorAction
 }, dispatch)
 
 const ConnectedUserSessionWidget = connect(mapStateToProps, mapDispatchToProps)(UserSessionWidget)

@@ -6,7 +6,7 @@ class PublicPage extends Component {
 
 	render() {
 		return (
-			<div className="page-content" id="LandingPage">
+			<main className="page-content" id="LandingPage">
 				<Container fluid className="col-xxl-8 px-4 py-5">
 					<Row className="align-items-center g-5 py-5">
 						<Col>
@@ -68,7 +68,7 @@ class PublicPage extends Component {
 						</Col>
 					</Row>
 				</Container>
-			</div>
+			</main>
 		)
 	}
 }
