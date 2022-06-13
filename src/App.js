@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import './custom.css'
+
+import TopMenu from './components/TopMenu'
 import PublicPage from './components/PublicPage'
 import PrivatePage from './components/PrivatePage'
-import TopMenu from './components/TopMenu'
 import Footer from './components/Footer'
-import './App.css'
-import './custom.css'
 
 const mapStateToProps = state => {
 	return state

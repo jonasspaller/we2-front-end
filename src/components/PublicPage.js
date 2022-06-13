@@ -27,7 +27,7 @@ class PublicPage extends Component {
 					<Row lg={3} md={2} className="g-5 mt-0">
 						<Col md={4}>
 							<Card>
-								<Card.Img variant="top" src="https://plchldr.co/i/100x60" />
+								<Card.Img variant="top" src="https://plchldr.co/i/398x239" />
 								<Card.Body>
 									<Card.Title>Card Title</Card.Title>
 									<Card.Text>
@@ -41,7 +41,7 @@ class PublicPage extends Component {
 
 						<Col md={4}>
 							<Card>
-								<Card.Img variant="top" src="https://plchldr.co/i/100x60" />
+								<Card.Img variant="top" src="https://plchldr.co/i/398x239" />
 								<Card.Body>
 									<Card.Title>Card Title</Card.Title>
 									<Card.Text>
@@ -55,7 +55,7 @@ class PublicPage extends Component {
 
 						<Col md={4}>
 							<Card>
-								<Card.Img variant="top" src="https://plchldr.co/i/100x60" />
+								<Card.Img variant="top" src="https://plchldr.co/i/398x239" />
 								<Card.Body>
 									<Card.Title>Card Title</Card.Title>
 									<Card.Text>
