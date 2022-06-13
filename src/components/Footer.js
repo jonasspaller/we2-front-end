@@ -4,12 +4,12 @@ import { Col, Container, Row } from 'react-bootstrap'
 function Footer(){
 
 	return (
-		<Container fluid>
-			<Col>
-				<Row>
-					<p>&copy; 2022 Jonas Spaller</p>
-				</Row>
-			</Col>
+		<Container fluid className="mt-5 bg-dark py-3 text-center">
+			<Row>
+				<Col>
+					<p className="mb-0 fw-bold text-white">&copy; 2022 Jonas Spaller</p>
+				</Col>
+			</Row>
 		</Container>
 	)
 }

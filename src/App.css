@@ -1,3 +1,18 @@
+body,
+#root,
+.App {
+	height: 100vh !important;
+}
+
+.App {
+	display: flex;
+	flex-direction: column;
+}
+
+.page-content {
+	flex: 1;
+}
+
 .btn-custom {
     background-color: rgb(0, 75, 118) !important;
 	color: #fff !important;
