@@ -7,7 +7,7 @@ import TopMenu from './components/TopMenu'
 import PublicPage from './components/PublicPage'
 import PrivatePage from './components/PrivatePage'
 import Footer from './components/Footer'
-import UserManagement from './components/UserManagement'
+import UserManagement from './components/UserManagement/UserManagement'
 import ActivityBar from './components/ActivityBar'
 import AccessDenied from './components/AccessDenied'
 
