@@ -1,11 +1,11 @@
 import * as authenticationActions from '../actions/AuthenticationActions'
 
 const initialState = {
-	user: null,
 	loginPending: false,
 	showLoginDialog: false,
-	accessToken: null,
-	error: null
+	error: null,
+	user: null,
+	accessToken: null
 }
 
 function rootReducer(state = initialState, action){
@@ -36,7 +36,7 @@ function rootReducer(state = initialState, action){
 				...state,
 				showLoginDialog: false,
 				pending: false,
-				userID: action.userID,
+				user: action.user,
 				accessToken: action.accessToken
 			}
 		case authenticationActions.AUTHENTICATION_ERROR:
