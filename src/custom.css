@@ -7,6 +7,10 @@
 	flex-direction: column;
 }
 
+.js-flex-override {
+	flex: 1 !important;
+}
+
 .page-content {
 	flex: 1;
 }

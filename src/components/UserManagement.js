@@ -1,7 +1,12 @@
-export default function UserManagement(props){
-	return (
-		<main className="page-content p-3">
-			<p>UserManagement</p>
-		</main>
-	)
+import { Component } from "react";
+
+export default class UserManagement extends Component {
+
+	render() {
+		return (
+			<main className="page-content p-3">
+				<h1>Nutzerverwaltung</h1>
+			</main>
+		)
+	}
 }

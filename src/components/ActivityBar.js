@@ -17,11 +17,6 @@ class ActivityBar extends Component {
 		// return null if user or accessToken are not set
 		if(!user || !token) return null
 
-		// check if user is admin for some ActivityBar items
-		if(user.isAdministrator){
-
-		}
-
 		return (
 			<Navbar bg="dark" variant="dark" expand="lg" sticky="top">
 				<Container>

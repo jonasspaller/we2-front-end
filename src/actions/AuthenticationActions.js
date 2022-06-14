@@ -52,6 +52,9 @@ export function authenticateUser(userID, password) {
 
 	return dispatch => {
 
+		// queue pending action
+		dispatch(getAuthenticationPendingAction())
+
 		// build request to rest api
 		const base64credentials = btoa(userID + ":" + password)
 		const requestOptions = {
@@ -65,7 +68,7 @@ export function authenticateUser(userID, password) {
 		// send request
 		fetch("https://localhost/authenticate", requestOptions)
 			.then(handleFetchResponse)
-			.then((fetchReturn) => {
+			.then(fetchReturn => {
 				const action = getAuthenticationSuccessAction(fetchReturn.userObject, fetchReturn.accessToken)
 				dispatch(action)
 			})
@@ -81,7 +84,7 @@ function handleFetchResponse(res) {
 
 	if (!authHeader){
 		logout()
-		return Promise.reject()
+		return Promise.reject("Etwas ist schiefgelaufen")
 	}
 
 	const accessToken = authHeader.split(" ")[1]
