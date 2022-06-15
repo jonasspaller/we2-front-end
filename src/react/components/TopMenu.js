@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { Navbar, Container, Nav } from "react-bootstrap"
 import UserSessionWidget from './UserSessionWidget'
-import BHTLogo from '../images/BHT_Logo_horizontal_Anthrazit_transparent.svg'
+import BHTLogo from '../../images/BHT_Logo_horizontal_Anthrazit_transparent.svg'
 import { Link } from "react-router-dom"
 
 class TopMenu extends Component {

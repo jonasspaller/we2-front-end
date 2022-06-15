@@ -3,7 +3,7 @@ import { Button, Modal, Form } from 'react-bootstrap'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as authenticationActions from '../actions/AuthenticationActions'
+import * as authenticationActions from '../../redux/authentication/AuthenticationActions'
 
 const mapStateToProps = state => {
 	return state
@@ -53,12 +53,12 @@ class UserSessionWidget extends Component {
 
 	render(){
 
-		var showDialog = this.props.showLoginDialog
+		var showDialog = this.props.authenticationReducer.showLoginDialog
 		if(showDialog === undefined){
 			showDialog = false
 		}
 
-		const token = this.props.accessToken
+		const token = this.props.authenticationReducer.accessToken
 		let button
 
 		if(!token){
@@ -68,8 +68,8 @@ class UserSessionWidget extends Component {
 		}
 
 		let errorHint
-		if(this.props.error){
-			errorHint = <p className="text-danger">{this.props.error}</p>
+		if(this.props.authenticationReducer.error){
+			errorHint = <p className="text-danger">{this.props.authenticationReducer.error}</p>
 		}
 
 		return(

@@ -1,4 +1,4 @@
-import * as authenticationActions from '../actions/AuthenticationActions'
+import * as authenticationActions from './AuthenticationActions'
 
 const initialState = {
 	loginPending: false,
@@ -8,9 +8,9 @@ const initialState = {
 	accessToken: null
 }
 
-function rootReducer(state = initialState, action){
+export default function authenticationReducer(state = initialState, action){
 
-	console.log("Reducer: " + action.type)
+	console.log("authenticationReducer: " + action.type)
 
 	switch(action.type){
 		case authenticationActions.SHOW_LOGIN_DIALOG:
@@ -55,5 +55,3 @@ function rootReducer(state = initialState, action){
 			return state
 	}
 }
-
-export default rootReducer

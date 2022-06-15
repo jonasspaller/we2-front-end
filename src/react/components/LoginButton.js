@@ -1,16 +1,11 @@
 import React, {Component} from 'react'
 import {Button} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {getShowLoginDialogAction} from '../actions/AuthenticationActions'
+import {getShowLoginDialogAction} from '../../redux/authentication/AuthenticationActions'
 
 class LoginButton extends Component {
 
-	constructor(props){
-		super(props)
-		this.showLoginDialog = this.showLoginDialog.bind(this)
-	}
-
-	showLoginDialog(){
+	showLoginDialog = () => {
 		const dispatch = this.props.dispatch
 		dispatch(getShowLoginDialogAction())
 	}

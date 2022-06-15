@@ -22,7 +22,7 @@ class UserManagement extends Component {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + this.props.accessToken
+				'Authorization': 'Bearer ' + this.props.authenticationReducer.accessToken
 			}
 		}
 

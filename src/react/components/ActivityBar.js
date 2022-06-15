@@ -11,8 +11,8 @@ class ActivityBar extends Component {
 
 	render(){
 
-		const user = this.props.user
-		const token = this.props.accessToken
+		const user = this.props.authenticationReducer.user
+		const token = this.props.authenticationReducer.accessToken
 
 		// return null if user or accessToken are not set
 		if(!user || !token) return null

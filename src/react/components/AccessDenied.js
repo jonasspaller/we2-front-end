@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
-import HammerTime from '../images/hammertime.gif'
+import HammerTime from '../../images/hammertime.gif'
 
 export default class AccessDenied extends Component {
 	render() {

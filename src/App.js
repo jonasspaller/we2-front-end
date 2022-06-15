@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import './custom.css'
 import { Routes, Route } from 'react-router-dom'
 
-import TopMenu from './components/TopMenu'
-import PublicPage from './components/PublicPage'
-import PrivatePage from './components/PrivatePage'
-import Footer from './components/Footer'
-import UserManagement from './components/UserManagement/UserManagement'
-import ActivityBar from './components/ActivityBar'
-import AccessDenied from './components/AccessDenied'
+import TopMenu from './react/components/TopMenu'
+import PublicPage from './react/components/PublicPage'
+import PrivatePage from './react/components/PrivatePage'
+import Footer from './react/components/Footer'
+import UserManagement from './react/user/UserManagement'
+import ActivityBar from './react/components/ActivityBar'
+import AccessDenied from './react/components/AccessDenied'
 
 const mapStateToProps = state => {
 	return state
@@ -19,8 +19,8 @@ class App extends Component {
 
 	render() {
 
-		const token = this.props.accessToken
-		const user = this.props.user
+		const token = this.props.authenticationReducer.accessToken
+		const user = this.props.authenticationReducer.user
 
 		return (
 			<>
