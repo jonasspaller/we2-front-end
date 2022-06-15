@@ -1,4 +1,4 @@
-import * as authenticationActions from '../actions/AuthenticationActions'
+import * as authenticationActions from './authentication/AuthenticationActions'
 
 const initialState = {
 	user: null,
@@ -8,9 +8,9 @@ const initialState = {
 	error: null
 }
 
-function rootReducer(state = initialState, action){
+export default function rootReducer(state = initialState, action){
 
-	console.log("Reducer: " + action.type)
+	console.log("authenticationReducer: " + action.type)
 
 	switch(action.type){
 		case authenticationActions.SHOW_LOGIN_DIALOG:
@@ -55,5 +55,3 @@ function rootReducer(state = initialState, action){
 			return state
 	}
 }
-
-export default rootReducer

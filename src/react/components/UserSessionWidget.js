@@ -3,7 +3,7 @@ import { Button, Modal, Form } from 'react-bootstrap'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as authenticationActions from '../actions/AuthenticationActions'
+import * as authenticationActions from '../../redux/authentication/AuthenticationActions'
 
 const mapStateToProps = state => {
 	return state
