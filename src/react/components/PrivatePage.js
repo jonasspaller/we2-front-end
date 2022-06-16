@@ -9,9 +9,9 @@ class PrivatePage extends Component {
 
 	render(){
 		return(
-			<div className="p-3 page-content" id="PrivatePage">
-				<h1>Willkommen, {this.props.userID}!</h1>
-			</div>
+			<main className="p-3 page-content" id="PrivatePage">
+				<h1>Willkommen, {this.props.authenticationReducer.user.userName}!</h1>
+			</main>
 		)
 	}
 }

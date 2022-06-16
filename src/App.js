@@ -15,7 +15,7 @@ class App extends Component {
 
 	render() {
 
-		const token = this.props.accessToken
+		const token = this.props.authenticationReducer.accessToken
 		let page
 
 		if(token){
