@@ -28,21 +28,21 @@ export default function AuthenticationReducer(state = initialState, action){
 		case authenticationActions.AUTHENTICATION_PENDING:
 			return {
 				...state,
-				pending: true,
+				loginPending: true,
 				error: null
 			}
 		case authenticationActions.AUTHENTICATION_SUCCESS:
 			return {
 				...state,
 				showLoginDialog: false,
-				pending: false,
+				loginPending: false,
 				user: action.user,
 				accessToken: action.accessToken
 			}
 		case authenticationActions.AUTHENTICATION_ERROR:
 			return {
 				...state,
-				pending: false,
+				loginPending: false,
 				error: action.error
 			}
 		case authenticationActions.LOGOUT_USER:
