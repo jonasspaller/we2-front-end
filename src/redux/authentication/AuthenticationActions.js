@@ -82,7 +82,7 @@ function handleFetchResponse(res) {
 
 	const authHeader = res.headers.get("Authorization")
 
-	if (!authHeader){
+	if (!authHeader || !res.ok){
 		logout()
 		return Promise.reject("Etwas ist schiefgelaufen")
 	}
