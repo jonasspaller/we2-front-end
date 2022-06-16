@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as authenticationActions from '../../redux/authentication/AuthenticationActions'
+import LoadingSpinner from './LoadingSpinner'
 
 const mapStateToProps = state => {
 	return state
@@ -97,6 +98,7 @@ class UserSessionWidget extends Component {
 					
 					<Modal.Footer>
 						{errorHint}
+						{this.props.authenticationReducer.loginPending ? <LoadingSpinner /> : ''}
 						<Button id="LoginButton" variant="custom" type="submit" onClick={this.handleSubmit}>Login</Button>
 					</Modal.Footer>
 				</Modal>
