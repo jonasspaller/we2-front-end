@@ -10,6 +10,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import storage from 'redux-persist/lib/storage'
 import { BrowserRouter } from 'react-router-dom'
+import './fontAwesome/css/all.css'
 
 const middlewares = [thunk]
 

@@ -11,7 +11,7 @@ class TopMenu extends Component {
 			<>
 				<Navbar bg="light" expand="lg">
 					<Container fluid>
-						<Navbar.Brand href="#home">
+						<Navbar.Brand href="/">
 							<img width="204" height="60" src={BHTLogo} className="d-inline-block align-center" alt="BHT Logo" />
 						</Navbar.Brand>
 						<Navbar.Toggle aria-controls="basic-navbar-nav" />
