@@ -1,6 +1,8 @@
 import { Component } from "react";
 import { Button, Table } from "react-bootstrap";
 import { connect } from "react-redux";
+import { deleteUser } from "../../redux/user/UserManagementService";
+import UserModal from "./UserModal";
 
 const mapStateToProps = state => {
 	return state
@@ -11,7 +13,9 @@ class UserManagement extends Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			users: []
+			users: [],
+			showUserModal: false,
+			userToEdit: null
 		}
 	}
 
@@ -34,17 +38,35 @@ class UserManagement extends Component {
 			})
 	}
 
-	editUser = (user) => {
-		console.log("user " + user.userID + " wird bearbeitet")
+	toggleUserModal = (event, user) => {
+		event.preventDefault()
+
+		this.setState({
+			userToEdit: user,
+			showUserModal: true
+		})
 	}
 
-	deleteUser = (user) => {
-		console.log("user " + user.userID + " wird gelöscht")
+	handleDeleteUser = (event, user) => {
+		event.preventDefault()
+		
+		deleteUser(user.userID, this.props.authenticationReducer.accessToken, (err, userDeleted) => {
+			if(err || !userDeleted){
+				// alert error
+			} else {
+				event.target.closest("TR").remove()
+			}
+		})
+	}
+
+	handleCloseUserModal = () => {
+		this.setState({showUserModal: false})
 	}
 
 	render(){
 
 		return(
+			<>
 			<main className="page-content p-3">
 				<h1>Nutzerverwaltung</h1>
 
@@ -65,8 +87,8 @@ class UserManagement extends Component {
 									<td>{user.userName}</td>
 									<td>{user.isAdministrator ? 'Ja' : 'Nein'}</td>
 									<td>
-										<Button id={"EditButton" + user.userID} variant="primary" onClick={() => this.editUser(user)}><i className="fa-solid fa-pencil"></i></Button>
-										<Button id={"DeleteButton" + user.userID} variant="danger" onClick={() => this.deleteUser(user)}><i className="fa-solid fa-trash-can"></i></Button>
+										<Button id={"EditButton" + user.userID} variant="primary" onClick={event => this.toggleUserModal(event, user)}><i className="fa-solid fa-pencil"></i></Button>
+										<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.handleDeleteUser(event, user)}><i className="fa-solid fa-trash-can"></i></Button>
 									</td>
 							</tr>
 							)
@@ -74,6 +96,9 @@ class UserManagement extends Component {
 					</tbody>
 				</Table>
 			</main>
+
+			<UserModal show={this.state.showUserModal} closeModal={this.handleCloseUserModal} userToEdit={this.state.userToEdit} />
+			</>
 		)
 	}	
 }
