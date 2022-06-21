@@ -10,8 +10,6 @@ const initialState = {
 
 export default function AuthenticationReducer(state = initialState, action){
 
-	console.log("AuthenticationReducer: " + action.type)
-
 	switch(action.type){
 		case authenticationActions.SHOW_LOGIN_DIALOG:
 			return {

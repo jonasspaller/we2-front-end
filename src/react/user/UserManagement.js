@@ -1,8 +1,8 @@
 import { Component } from "react";
 import { Button, Table } from "react-bootstrap";
 import { connect } from "react-redux";
-import { deleteUser } from "../../redux/user/UserManagementService";
-import UserModal from "./UserModal";
+import { deleteUser } from "../../redux/user/UserManagementActions";
+import UserUpdateModal from "./UserUpdateModal";
 
 const mapStateToProps = state => {
 	return state
@@ -38,15 +38,6 @@ class UserManagement extends Component {
 			})
 	}
 
-	toggleUserModal = (event, user) => {
-		event.preventDefault()
-
-		this.setState({
-			userToEdit: user,
-			showUserModal: true
-		})
-	}
-
 	handleDeleteUser = (event, user) => {
 		event.preventDefault()
 		
@@ -59,10 +50,6 @@ class UserManagement extends Component {
 		})
 	}
 
-	handleCloseUserModal = () => {
-		this.setState({showUserModal: false})
-	}
-
 	render(){
 
 		return(
@@ -70,7 +57,7 @@ class UserManagement extends Component {
 			<main className="page-content p-3">
 				<h1>Nutzerverwaltung</h1>
 
-				<Table responsive striped borderless hover>
+				<Table responsive striped borderless>
 					<thead>
 						<tr>
 							<th>User ID</th>
@@ -87,7 +74,7 @@ class UserManagement extends Component {
 									<td>{user.userName}</td>
 									<td>{user.isAdministrator ? 'Ja' : 'Nein'}</td>
 									<td>
-										<Button id={"EditButton" + user.userID} variant="primary" onClick={event => this.toggleUserModal(event, user)}><i className="fa-solid fa-pencil"></i></Button>
+										<UserUpdateModal user={user}/>
 										<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.handleDeleteUser(event, user)}><i className="fa-solid fa-trash-can"></i></Button>
 									</td>
 							</tr>
@@ -97,7 +84,6 @@ class UserManagement extends Component {
 				</Table>
 			</main>
 
-			<UserModal show={this.state.showUserModal} closeModal={this.handleCloseUserModal} userToEdit={this.state.userToEdit} />
 			</>
 		)
 	}	
