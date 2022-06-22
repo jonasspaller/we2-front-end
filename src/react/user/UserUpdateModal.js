@@ -1,10 +1,8 @@
 import { Component } from "react"
 import { Modal, Form, Button } from "react-bootstrap"
 import { connect } from "react-redux"
-import { bindActionCreators } from 'redux'
 
-import * as userManagementActions from '../../redux/user/UserManagementActions'
-import LoadingSpinner from '../components/LoadingSpinner'
+import { updateUser } from '../../redux/user/UserManagementActions'
 
 const mapStateToProps = state => {
 	return state
@@ -18,7 +16,8 @@ class UserUpdateModal extends Component {
 			showUpdateModal: false,
 			userName: null,
 			password: null,
-			isAdministrator: this.props.user.isAdministrator
+			isAdministrator: this.props.user.isAdministrator,
+			error: null
 		}
 	}
 
@@ -43,16 +42,28 @@ class UserUpdateModal extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault()
 
-		const {updateUserAction} = this.props
-
-		updateUserAction(this.props.user.userID, this.state.userName, this.state.password, this.state.isAdministrator, this.props.authenticationReducer.accessToken)
+		updateUser(
+			this.props.user.userID,
+			this.state.userName,
+			this.state.password,
+			this.state.isAdministrator,
+			this.props.authenticationReducer.accessToken,
+			(err, updatedUser) => {
+				if(err){
+					this.setState({error: err})
+				} else {
+					this.setState({showUpdateModal: false})
+					this.props.handleUpdateUser(updatedUser)
+				}
+			}
+		)
 	}
 
 	render() {
 
-		let errorHint
-		if(this.props.userManagementReducer.updateError){
-			errorHint = <p className="text-danger">{this.props.userManagementReducer.updateError}</p>
+		var showUpdateModal = this.state.showUpdateModal
+		if(showUpdateModal === undefined){
+			showUpdateModal = false
 		}
 
 		return (
@@ -60,7 +71,7 @@ class UserUpdateModal extends Component {
 
 			<Button id={"EditButton" + this.props.user.userID} variant="custom" onClick={this.handleShow}><i className="fa-solid fa-pencil"></i></Button>
 
-			<Modal show={this.state.showUpdateModal} onHide={this.handleClose} centered>
+			<Modal show={showUpdateModal} onHide={this.handleClose} centered>
 				<Modal.Header closeButton>
 					<Modal.Title>
 						{this.props.user.userID} bearbeiten
@@ -82,8 +93,6 @@ class UserUpdateModal extends Component {
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-					{errorHint}
-					{this.props.userManagementReducer.savingPending ? <LoadingSpinner /> : ''}
 					<Button variant="custom" type="submit" onClick={this.handleSubmit}>Speichern</Button>
 				</Modal.Footer>
 			</Modal>
@@ -93,12 +102,4 @@ class UserUpdateModal extends Component {
 	}
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-	updateUserAction: userManagementActions.updateUser,
-	deleteUserAction: userManagementActions.deleteUser,
-	savingErrorAction: userManagementActions.getUpdateErrorAction
-}, dispatch)
-
-const ConnectedUserUpdateModal = connect(mapStateToProps, mapDispatchToProps)(UserUpdateModal)
-
-export default ConnectedUserUpdateModal
+export default connect(mapStateToProps)(UserUpdateModal)

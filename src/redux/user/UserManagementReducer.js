@@ -1,26 +1,13 @@
 import * as userManagementActions from './UserManagementActions'
 
 const initialState = {
-	showUpdateModal: false,
 	updateError: null,
-	savingPending: false,
-	oldUser: null,
-	newUser: null
+	savingPending: false
 }
 
 export default function UserManagementReducer(state = initialState, action){
 
 	switch(action.type){
-		case userManagementActions.SHOW_UPDATE_MODAL:
-			return {
-				...state,
-				showUpdateModal: true
-			}
-		case userManagementActions.HIDE_UPDATE_MODAL:
-			return {
-				...state,
-				showUpdateModal: false
-			}
 		case userManagementActions.UPDATE_PENDING:
 			return {
 				...state,
@@ -29,12 +16,8 @@ export default function UserManagementReducer(state = initialState, action){
 		case userManagementActions.UPDATE_SUCCESS:
 			return {
 				...state,
-				showUpdateModal: false,
 				updateError: null,
-				savingPending: false,
-				updUserName: action.updUser.userName,
-				updPassword: action.updUser.password,
-				updIsAdmin: action.updUser.isAdministrator
+				savingPending: false
 			}
 		case userManagementActions.UPDATE_ERROR:
 			return {

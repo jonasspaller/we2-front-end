@@ -38,6 +38,20 @@ class UserManagement extends Component {
 			})
 	}
 
+	handleUpdateUser = (updatedUser) => {
+		this.setState(prevState => ({
+			users: prevState.users.map(
+				oldUser => {
+					if(oldUser.userID === updatedUser.userID){
+						return updatedUser
+					}else {
+						return oldUser
+					}
+				}
+			)
+		}))
+	}
+
 	handleDeleteUser = (event, user) => {
 		event.preventDefault()
 		
@@ -74,10 +88,10 @@ class UserManagement extends Component {
 									<td>{user.userName}</td>
 									<td>{user.isAdministrator ? 'Ja' : 'Nein'}</td>
 									<td>
-										<UserUpdateModal user={user}/>
+										<UserUpdateModal user={user} handleUpdateUser={this.handleUpdateUser} />
 										<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.handleDeleteUser(event, user)}><i className="fa-solid fa-trash-can"></i></Button>
 									</td>
-							</tr>
+								</tr>
 							)
 						})}
 					</tbody>
