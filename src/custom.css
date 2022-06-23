@@ -1,0 +1,22 @@
+.js-h-100 {
+	min-height: 100vh !important;
+}
+
+.js-flex-column {
+	display: flex;
+	flex-direction: column;
+}
+
+.page-content {
+	flex: 1;
+}
+
+.btn-custom {
+    background-color: rgb(0, 75, 118) !important;
+	color: #fff !important;
+}
+
+.btn-custom:hover,
+.btn-custom:focus {
+	background-color: rgb(0, 119, 182) !important;
+}
