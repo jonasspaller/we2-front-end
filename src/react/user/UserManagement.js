@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Button, Table } from "react-bootstrap";
 import { connect } from "react-redux";
-import { deleteUser, getAllUsers } from "../../redux/user/UserManagementActions";
+import * as userManagementActions from "../../redux/user/UserManagementActions";
 import { getUpdateCurrentUserDataAction } from "../../redux/authentication/AuthenticationActions"
 import UserUpdateModal from "./UserUpdateModal";
 import { bindActionCreators } from "redux";
@@ -23,45 +23,19 @@ class UserManagement extends Component {
 	}
 
 	componentDidMount(){
-		getAllUsers(this.props.authenticationReducer.accessToken, (err, users) => {
-			if(!err && users){
-				this.setState({users: users})
-			}
-		})
-	}
 
-	handleUpdateUser = (updatedUser) => {
-		this.setState(prevState => ({
-			users: prevState.users.map(
-				oldUser => {
-					if(oldUser.userID === updatedUser.userID){
-						return updatedUser
-					}else {
-						return oldUser
-					}
-				}
-			)
-		}))
-
-		// check if current user edited himself
-		if(this.props.authenticationReducer.user.userID === updatedUser.userID){
-			console.log("Du hast dich selbst bearbeitet")
-			
-			const {updateCurrentUserDataAction} = this.props
-			updateCurrentUserDataAction(updatedUser)
-		}
-	}
-
-	handleDeleteUser = (event, user) => {
-		event.preventDefault()
+		const {populateAllUsersAction} = this.props
 		
-		deleteUser(user.userID, this.props.authenticationReducer.accessToken, (err, userDeleted) => {
-			if(err || !userDeleted){
-				// alert error
-			} else {
-				event.target.closest("TR").remove()
-			}
+		userManagementActions.getAllUsers(this.props.authenticationReducer.accessToken, (users) => {
+			populateAllUsersAction(users)
 		})
+	}
+
+	handleDeleteUser = (event, userID) => {
+		event.preventDefault()
+
+		const {deleteUserAction} = this.props
+		deleteUserAction(userID, this.props.authenticationReducer.accessToken)
 	}
 
 	render(){
@@ -83,15 +57,15 @@ class UserManagement extends Component {
 						</tr>
 					</thead>
 					<tbody>
-						{this.state.users.map((user, i) => {
+						{this.props.userManagementReducer.allUsers.map((user, i) => {
 							return (
 								<tr key={i} id={"UserItem" + user.userID}>
 									<td>{user.userID}</td>
 									<td>{user.userName}</td>
 									<td>{user.isAdministrator ? 'Ja' : 'Nein'}</td>
 									<td>
-										<UserUpdateModal user={user} handleUpdateUser={this.handleUpdateUser} />
-										<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.handleDeleteUser(event, user)}><i className="fa-solid fa-trash-can"></i></Button>
+										<UserUpdateModal user={user} />
+										<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.handleDeleteUser(event, user.userID)}><i className="fa-solid fa-trash-can"></i></Button>
 									</td>
 								</tr>
 							)
@@ -106,6 +80,8 @@ class UserManagement extends Component {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+	populateAllUsersAction: userManagementActions.getPopulateAllUsersAction,
+	deleteUserAction: userManagementActions.deleteUser,
 	updateCurrentUserDataAction: getUpdateCurrentUserDataAction
 }, dispatch)
 

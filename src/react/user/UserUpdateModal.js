@@ -1,8 +1,9 @@
 import { Component } from "react"
 import { Modal, Form, Button } from "react-bootstrap"
 import { connect } from "react-redux"
+import { bindActionCreators } from "redux"
 
-import { updateUser } from '../../redux/user/UserManagementActions'
+import * as userManagementActions from '../../redux/user/UserManagementActions'
 
 const mapStateToProps = state => {
 	return state
@@ -13,21 +14,21 @@ class UserUpdateModal extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			showUpdateModal: false,
 			userName: null,
 			password: null,
-			isAdministrator: this.props.user.isAdministrator,
-			error: null
+			isAdministrator: this.props.userManagementReducer.userToUpdate.isAdministrator
 		}
 	}
 
-	handleShow = (e) => {
+	handleShow = (e, user) => {
 		e.preventDefault()
-		this.setState({showUpdateModal: true})
+		const {showUpdateModalAction} = this.props
+		showUpdateModalAction(user)
 	}
 
 	handleClose = () => {
-		this.setState({showUpdateModal: false})
+		const {hideUpdateModalAction} = this.props
+		hideUpdateModalAction()
 	}
 
 	handleChange = (e) => {
@@ -42,57 +43,63 @@ class UserUpdateModal extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault()
 
-		updateUser(
+		const{updateUserAction} = this.props
+		updateUserAction(
 			this.props.user.userID,
 			this.state.userName,
 			this.state.password,
 			this.state.isAdministrator,
-			this.props.authenticationReducer.accessToken,
-			(err, updatedUser) => {
-				if(err){
-					this.setState({error: err})
-				} else {
-					this.setState({showUpdateModal: false})
-					this.props.handleUpdateUser(updatedUser)
-				}
-			}
+			this.props.authenticationReducer.accessToken
 		)
 	}
 
 	render() {
 
-		var showUpdateModal = this.state.showUpdateModal
+		let showUpdateModal = this.props.userManagementReducer.showUpdateModal
 		if(showUpdateModal === undefined){
 			showUpdateModal = false
+		}
+
+		let isAdminCheckbox
+		if(this.props.userManagementReducer.userToUpdate.isAdministrator){
+			isAdminCheckbox = <Form.Check checked name="isAdministrator" onChange={this.handleCheckbox} label="Administrator" />
+		} else {
+			isAdminCheckbox = <Form.Check name="isAdministrator" onChange={this.handleCheckbox} label="Administrator" />
+		}
+
+		let errorHint
+		if(this.props.userManagementReducer.updateError){
+			errorHint = <p className="text-danger">{this.props.userManagementReducer.updateError}</p>
 		}
 
 		return (
 			<>
 
-			<Button id={"EditButton" + this.props.user.userID} className="custom-mr" variant="custom" onClick={this.handleShow}><i className="fa-solid fa-pencil"></i></Button>
+			<Button id={"EditButton" + this.props.user.userID} className="custom-mr" variant="custom" onClick={event => this.handleShow(event, this.props.user)}><i className="fa-solid fa-pencil"></i></Button>
 
 			<Modal show={showUpdateModal} onHide={this.handleClose} centered>
 				<Modal.Header closeButton>
 					<Modal.Title>
-						{this.props.user.userID} bearbeiten
+						{this.props.userManagementReducer.userToUpdate.userID} bearbeiten
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form>
 						<Form.Group>
 							<Form.Label>Username</Form.Label>
-							<Form.Control className="mb-3" type="text" name="userName" placeholder={this.props.user.userName} onChange={this.handleChange} />
+							<Form.Control className="mb-3" type="text" name="userName" placeholder={this.props.userManagementReducer.userToUpdate.userName} onChange={this.handleChange} />
 						</Form.Group>
 						<Form.Group>
 							<Form.Label>Password</Form.Label>
 							<Form.Control className="mb-3" type="password" name="password" placeholder="Passwort" onChange={this.handleChange} />
 						</Form.Group>
 						<Form.Group>
-							<Form.Check checked={this.state.isAdministrator} name="isAdministrator" onChange={this.handleCheckbox} label="Administrator" />
+							{isAdminCheckbox}
 						</Form.Group>
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
+					{errorHint}
 					<Button variant="custom" type="submit" onClick={this.handleSubmit}>Speichern</Button>
 				</Modal.Footer>
 			</Modal>
@@ -102,4 +109,12 @@ class UserUpdateModal extends Component {
 	}
 }
 
-export default connect(mapStateToProps)(UserUpdateModal)
+const mapDispatchToProps = dispatch => bindActionCreators({
+	showUpdateModalAction: userManagementActions.getShowUpdateModalAction,
+	hideUpdateModalAction: userManagementActions.getHideUpdateModalAction,
+	updateUserAction: userManagementActions.updateUser
+}, dispatch)
+
+const ConnectedUserUpdateModal = connect(mapStateToProps, mapDispatchToProps)(UserUpdateModal)
+
+export default ConnectedUserUpdateModal
