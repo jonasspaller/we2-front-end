@@ -49,6 +49,11 @@ export default function AuthenticationReducer(state = initialState, action){
 				user: null,
 				accessToken: null
 			}
+		case authenticationActions.UPDATE_CURRENT_USER_DATA:
+			return {
+				...state,
+				user: action.selfUpdatedUser
+			}
 		default:
 			return state
 	}

@@ -2,7 +2,9 @@ import { Component } from "react";
 import { Button, Table } from "react-bootstrap";
 import { connect } from "react-redux";
 import { deleteUser } from "../../redux/user/UserManagementActions";
+import { getUpdateCurrentUserDataAction } from "../../redux/authentication/AuthenticationActions"
 import UserUpdateModal from "./UserUpdateModal";
+import { bindActionCreators } from "redux";
 
 const mapStateToProps = state => {
 	return state
@@ -50,6 +52,14 @@ class UserManagement extends Component {
 				}
 			)
 		}))
+
+		// check if current user edited himself
+		if(this.props.authenticationReducer.user.userID === updatedUser.userID){
+			console.log("Du hast dich selbst bearbeitet")
+			
+			const {updateCurrentUserDataAction} = this.props
+			updateCurrentUserDataAction(updatedUser)
+		}
 	}
 
 	handleDeleteUser = (event, user) => {
@@ -103,4 +113,10 @@ class UserManagement extends Component {
 	}	
 }
 
-export default connect(mapStateToProps)(UserManagement)
+const mapDispatchToProps = dispatch => bindActionCreators({
+	updateCurrentUserDataAction: getUpdateCurrentUserDataAction
+}, dispatch)
+
+const ConnectedUserManagementWidget = connect(mapStateToProps, mapDispatchToProps)(UserManagement)
+
+export default ConnectedUserManagementWidget
