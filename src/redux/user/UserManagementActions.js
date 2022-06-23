@@ -2,21 +2,20 @@ import config from "../../config.json"
 
 export const POPULATE_ALL_USERS = "POPULATE_ALL_USERS"
 
-export const SHOW_USER_CREATE_MODAL = "SHOW_USER_CREATE_MODAL"
-export const HIDE_USER_CREATE_MODAL = "HIDE_USER_CREATE_MODAL"
+export const SHOW_USER_MODAL = "SHOW_USER_MODAL"
+export const HIDE_USER_MODAL = "HIDE_USER_MODAL"
 
-export const CREATION_PENDING = "CREATION_PENDING"
+export const PENDING = "PENDING"
+
 export const CREATION_SUCCESS = "CREATION_SUCCESS"
 export const CREATION_ERROR = "CREATION_ERROR"
 
-export const DELETE_USER = "DELETE_USER"
-
-export const SHOW_UPDATE_MODAL = "SHOW_UPDATE_MODAL"
-export const HIDE_UPDATE_MODAL = "HIDE_UPDATE_MODAL"
-
-export const UPDATE_PENDING = "UPDATE_PENDING"
 export const UPDATE_SUCCESS = "UPDATE_SUCCESS"
 export const UPDATE_ERROR = "UPDATE_ERROR"
+
+export const DELETE_USER = "DELETE_USER"
+export const SHOW_DELETE_CONFIRM = "SHOW_CONFIRM"
+export const HIDE_DELETE_CONFIRM = "HIDE_CONFIRM"
 
 export function getPopulateAllUsersAction(allUsers){
 	return {
@@ -25,21 +24,22 @@ export function getPopulateAllUsersAction(allUsers){
 	}
 }
 
-export function getShowUserCreateModalAction(){
+export function getShowUserModalAction(user){
 	return {
-		type: SHOW_USER_CREATE_MODAL
+		type: SHOW_USER_MODAL,
+		userToUpdate: user
 	}
 }
 
-export function getHideUserCreateModalAction(){
+export function getHideUserModalAction(){
 	return {
-		type: HIDE_USER_CREATE_MODAL
+		type: HIDE_USER_MODAL
 	}
 }
 
-export function getCreationPendingAction(){
+export function getPendingAction(){
 	return {
-		type: CREATION_PENDING
+		type: PENDING
 	}
 }
 
@@ -57,32 +57,6 @@ export function getCreationErrorAction(error){
 	}
 }
 
-export function getDeleteUserAction(userID){
-	return {
-		type: DELETE_USER,
-		userToDelete: userID
-	}
-}
-
-export function getShowUpdateModalAction(user){
-	return {
-		type: SHOW_UPDATE_MODAL,
-		userToUpdate: user
-	}
-}
-
-export function getHideUpdateModalAction(){
-	return {
-		type: HIDE_UPDATE_MODAL
-	}
-}
-
-export function getUpdatePendingAction(){
-	return {
-		type: UPDATE_PENDING
-	}
-}
-
 export function getUpdateSuccessAction(user){
 	return {
 		type: UPDATE_SUCCESS,
@@ -94,6 +68,26 @@ export function getUpdateErrorAction(error){
 	return {
 		type: UPDATE_ERROR,
 		updateError: error
+	}
+}
+
+export function getDeleteUserAction(userID){
+	return {
+		type: DELETE_USER,
+		userToDelete: userID
+	}
+}
+
+export function getShowConfirmAction(){
+	return {
+		type: SHOW_DELETE_CONFIRM
+	}
+}
+
+export function getHideConfirmAction(){
+	return {
+		type: HIDE_DELETE_CONFIRM,
+		confirmQuestion: null
 	}
 }
 
@@ -120,6 +114,9 @@ export function createNewUser(newUserID, newUserName, newPassword, newIsAdminist
 
 	return dispatch => {
 
+		// queue pending action
+		dispatch(getPendingAction())
+
 		// build object to pass to api
 		const newUser = {
 			userID: newUserID,
@@ -127,9 +124,6 @@ export function createNewUser(newUserID, newUserName, newPassword, newIsAdminist
 			password: newPassword,
 			isAdministrator: newIsAdministrator
 		}
-
-		// queue pending action
-		dispatch(getCreationPendingAction())
 
 		// build request to rest api
 		const requestOptions = {
@@ -157,6 +151,9 @@ export function createNewUser(newUserID, newUserName, newPassword, newIsAdminist
 export function updateUser(userID, userName, password, isAdministrator, token) {
 
 	return dispatch => {
+
+		// queue pending action
+		dispatch(getPendingAction())
 
 		// compose request body
 		let reqBody = {}

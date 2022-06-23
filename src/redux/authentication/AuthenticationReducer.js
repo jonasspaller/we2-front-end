@@ -1,11 +1,11 @@
 import * as authenticationActions from './AuthenticationActions'
 
 const initialState = {
-	loginPending: false,
-	showLoginDialog: false,
-	error: null,
 	user: null,
-	accessToken: null
+	accessToken: null,
+	showLoginDialog: false,
+	loginPending: false,
+	error: null
 }
 
 export default function AuthenticationReducer(state = initialState, action){
@@ -48,11 +48,6 @@ export default function AuthenticationReducer(state = initialState, action){
 				...state,
 				user: null,
 				accessToken: null
-			}
-		case authenticationActions.UPDATE_CURRENT_USER_DATA:
-			return {
-				...state,
-				user: action.selfUpdatedUser
 			}
 		default:
 			return state

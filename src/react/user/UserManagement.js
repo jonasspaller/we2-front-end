@@ -1,11 +1,12 @@
 import { Component } from "react";
 import { Button, Table } from "react-bootstrap";
 import { connect } from "react-redux";
-import * as userManagementActions from "../../redux/user/UserManagementActions";
-import { getUpdateCurrentUserDataAction } from "../../redux/authentication/AuthenticationActions"
-import UserUpdateModal from "./UserUpdateModal";
 import { bindActionCreators } from "redux";
-import UserCreateModal from "./UserCreateModal"
+
+import * as userManagementActions from "../../redux/user/UserManagementActions";
+
+import UserModal from "./UserModal";
+import Confirm from "./ConfirmUserDelete";
 
 const mapStateToProps = state => {
 	return state
@@ -13,17 +14,9 @@ const mapStateToProps = state => {
 
 class UserManagement extends Component {
 
-	constructor(props) {
-		super(props)
-		this.state = {
-			users: [],
-			showUserModal: false,
-			userToEdit: null
-		}
-	}
-
 	componentDidMount() {
 
+		// get all users and put this list in redux store
 		const { populateAllUsersAction } = this.props
 
 		userManagementActions.getAllUsers(this.props.authenticationReducer.accessToken, (users) => {
@@ -31,16 +24,21 @@ class UserManagement extends Component {
 		})
 	}
 
-	showUpdateModal = (e, user) => {
+	showUserModal = (e, user) => {
 		e.preventDefault()
 
-		const {showUpdateModalAction} = this.props
-		showUpdateModalAction(user)
+		const { showUserModalAction } = this.props
+		showUserModalAction(user)
 	}
 
-	handleDeleteUser = (event, userID) => {
-		event.preventDefault()
+	askDelete = (e) => {
+		e.preventDefault()
 
+		const {showConfirmAction} = this.props
+		showConfirmAction()
+	}
+
+	handleDelete = (userID) => {
 		const { deleteUserAction } = this.props
 		deleteUserAction(userID, this.props.authenticationReducer.accessToken)
 	}
@@ -54,8 +52,9 @@ class UserManagement extends Component {
 					<td>{user.userName}</td>
 					<td>{user.isAdministrator ? 'Ja' : 'Nein'}</td>
 					<td>
-						<Button id={"EditButton" + user.userID} className="custom-mr" variant="custom" onClick={e => this.showUpdateModal(e, user)}><i className="fa-solid fa-pencil"></i></Button>
-						<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.handleDeleteUser(event, user.userID)}><i className="fa-solid fa-trash-can"></i></Button>
+						<Button id={"EditButton" + user.userID} className="custom-mr" variant="custom" onClick={e => this.showUserModal(e, user)}><i className="fa-solid fa-pencil"></i></Button>
+						<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.askDelete(event, user.userID)}><i className="fa-solid fa-trash-can"></i></Button>
+						{this.props.userManagementReducer.showDeleteConfirm ? <Confirm callBack={() => this.handleDelete(user.userID)} /> : ''}
 					</td>
 				</tr>
 			)
@@ -66,7 +65,10 @@ class UserManagement extends Component {
 				<main className="page-content p-3">
 					<h1>Nutzerverwaltung</h1>
 
-					<UserCreateModal />
+					<Button variant="custom" id="OpenCreateUserDialogButton" onClick={e => this.showUserModal(e, null)} >
+						<i className="fa-solid fa-plus custom-mr"></i>
+						Neuer Nutzer
+					</Button>
 
 					<Table responsive striped borderless>
 						<thead>
@@ -82,7 +84,7 @@ class UserManagement extends Component {
 						</tbody>
 					</Table>
 				</main>
-				{this.props.userManagementReducer.showUpdateModal ? <UserUpdateModal /> : ''}
+				{this.props.userManagementReducer.showUserModal ? <UserModal /> : ''}
 			</>
 		)
 	}
@@ -90,9 +92,10 @@ class UserManagement extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	populateAllUsersAction: userManagementActions.getPopulateAllUsersAction,
+	showUserModalAction: userManagementActions.getShowUserModalAction,
 	deleteUserAction: userManagementActions.deleteUser,
-	updateCurrentUserDataAction: getUpdateCurrentUserDataAction,
-	showUpdateModalAction: userManagementActions.getShowUpdateModalAction
+	showConfirmAction: userManagementActions.getShowConfirmAction,
+	hideConfirmAction: userManagementActions.getHideConfirmAction
 }, dispatch)
 
 const ConnectedUserManagementWidget = connect(mapStateToProps, mapDispatchToProps)(UserManagement)
