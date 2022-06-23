@@ -18,12 +18,12 @@ class ActivityBar extends Component {
 		if(!user || !token) return null
 
 		return (
-			<Navbar bg="dark" variant="dark" expand="lg" sticky="top">
+			<Navbar bg="dark" variant="dark" expand="lg" sticky="top" id="activity-bar">
 				<Container>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">
 						<Nav className="me-auto">
-							{user.isAdministrator ? <Link to="/userManagement" id="OpenUserManagementButton" className="nav-link">Nutzerverwaltung</Link> : ''}
+							{user.isAdministrator ? <Link to="/userManagement" id="OpenUserManagementButton" className="nav-link"><i className="fa-solid fa-user-group custom-mr"></i>Nutzerverwaltung</Link> : ''}
 						</Nav>
 					</Navbar.Collapse>
 				</Container>

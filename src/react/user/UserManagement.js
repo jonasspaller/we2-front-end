@@ -5,6 +5,7 @@ import { deleteUser } from "../../redux/user/UserManagementActions";
 import { getUpdateCurrentUserDataAction } from "../../redux/authentication/AuthenticationActions"
 import UserUpdateModal from "./UserUpdateModal";
 import { bindActionCreators } from "redux";
+import UserCreateModal from "./UserCreateModal"
 
 const mapStateToProps = state => {
 	return state
@@ -80,6 +81,8 @@ class UserManagement extends Component {
 			<>
 			<main className="page-content p-3">
 				<h1>Nutzerverwaltung</h1>
+
+				<UserCreateModal />
 
 				<Table responsive striped borderless>
 					<thead>

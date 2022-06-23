@@ -69,7 +69,7 @@ class UserUpdateModal extends Component {
 		return (
 			<>
 
-			<Button id={"EditButton" + this.props.user.userID} variant="custom" onClick={this.handleShow}><i className="fa-solid fa-pencil"></i></Button>
+			<Button id={"EditButton" + this.props.user.userID} className="custom-mr" variant="custom" onClick={this.handleShow}><i className="fa-solid fa-pencil"></i></Button>
 
 			<Modal show={showUpdateModal} onHide={this.handleClose} centered>
 				<Modal.Header closeButton>
@@ -85,7 +85,7 @@ class UserUpdateModal extends Component {
 						</Form.Group>
 						<Form.Group>
 							<Form.Label>Password</Form.Label>
-							<Form.Control className="mb-3" type="password" name="password" placeholder="Password" onChange={this.handleChange} />
+							<Form.Control className="mb-3" type="password" name="password" placeholder="Passwort" onChange={this.handleChange} />
 						</Form.Group>
 						<Form.Group>
 							<Form.Check checked={this.state.isAdministrator} name="isAdministrator" onChange={this.handleCheckbox} label="Administrator" />

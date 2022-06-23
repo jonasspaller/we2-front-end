@@ -1,24 +1,76 @@
-export const UPDATE_PENDING = "UPDATE_PENDING"
-export const UPDATE_SUCCESS = "UPDATE_SUCCESS"
-export const UPDATE_ERROR = "UPDATE_ERROR"
+export const SHOW_USER_CREATE_MODAL = "SHOW_USER_CREATE_MODAL"
+export const HIDE_USER_CREATE_MODAL = "HIDE_USER_CREATE_MODAL"
 
-export function getUpdatePendingAction() {
+export const CREATION_PENDING = "CREATION_PENDING"
+export const CREATION_SUCCESS = "CREATION_SUCCESS"
+export const CREATION_ERROR = "CREATION_ERROR"
+
+export function getShowUserCreateModalAction(){
 	return {
-		type: UPDATE_PENDING
+		type: SHOW_USER_CREATE_MODAL
 	}
 }
 
-export function getUpdateSuccessAction(userToUpdate) {
+export function getHideUserCreateModalAction(){
 	return {
-		type: UPDATE_SUCCESS,
-		updUser: userToUpdate
+		type: HIDE_USER_CREATE_MODAL
 	}
 }
 
-export function getUpdateErrorAction(err) {
+export function getCreationPendingAction(){
 	return {
-		type: UPDATE_ERROR,
-		updateError: err
+		type: CREATION_PENDING
+	}
+}
+
+export function getCreationSuccessAction(){
+	return {
+		type: CREATION_SUCCESS
+	}
+}
+
+export function getCreationErrorAction(error){
+	return {
+		type: CREATION_ERROR,
+		saveError: error
+	}
+}
+
+export function createNewUser(newUserID, newUserName, newPassword, newIsAdministrator, token){
+
+	return dispatch => {
+
+		// build object to pass to api
+		const newUser = {
+			userID: newUserID,
+			userName: newUserName,
+			password: newPassword,
+			isAdministrator: newIsAdministrator
+		}
+
+		// queue pending action
+		dispatch(getCreationPendingAction())
+
+		// build request to rest api
+		const requestOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + token
+			},
+			body: JSON.stringify(newUser)
+		}
+
+		// send request
+		fetch("https://localhost/users", requestOptions)
+			.then(handleFetchResponse)
+			.then(() => {
+				const action = getCreationSuccessAction()
+				dispatch(action)
+			})
+			.catch(error => {
+				dispatch(getCreationErrorAction(error))
+			})
 	}
 }
 
@@ -77,12 +129,17 @@ export function deleteUser(userID, token, callback) {
 
 function handleFetchResponse(res) {
 
-	if (!res.ok) {
-		return Promise.reject("Etwas ist schiefgelaufen")
-	}
+	return res.text().then(text => {
 
-	const resBody = res.json()
-	console.log(resBody)
+		const resBody = text && JSON.parse(text)
 
-	return resBody
+		console.log(resBody)
+
+		if(!res.ok){
+			const error = resBody.Error || res.statusText
+			return Promise.reject(error)
+		}
+		
+		return resBody
+	})
 }

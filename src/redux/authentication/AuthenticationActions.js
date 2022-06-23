@@ -90,16 +90,23 @@ export function authenticateUser(userID, password) {
 function handleFetchResponse(res) {
 
 	const authHeader = res.headers.get("Authorization")
+	
+	return res.text().then(text => {
 
-	if (!authHeader || !res.ok){
-		logout()
-		return Promise.reject("Etwas ist schiefgelaufen")
-	}
+		const resBody = text && JSON.parse(text)
 
-	const accessToken = authHeader.split(" ")[1]
-	const userObject = jwtDecode(accessToken)
+		if (!authHeader || !res.ok){
+			logout()
+			const error = resBody.Error || res.statusText
+			return Promise.reject(error)
+		} else {
 
-	return { userObject, accessToken }
+			const accessToken = authHeader.split(" ")[1]
+			const userObject = jwtDecode(accessToken)
+		
+			return { userObject, accessToken }
+		}
+	})
 }
 
 function logout() {
