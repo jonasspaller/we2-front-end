@@ -13,7 +13,7 @@ const mapStateToProps = state => {
 
 class UserManagement extends Component {
 
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.state = {
 			users: [],
@@ -22,67 +22,77 @@ class UserManagement extends Component {
 		}
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 
-		const {populateAllUsersAction} = this.props
-		
+		const { populateAllUsersAction } = this.props
+
 		userManagementActions.getAllUsers(this.props.authenticationReducer.accessToken, (users) => {
 			populateAllUsersAction(users)
 		})
 	}
 
+	showUpdateModal = (e, user) => {
+		e.preventDefault()
+
+		const {showUpdateModalAction} = this.props
+		showUpdateModalAction(user)
+	}
+
 	handleDeleteUser = (event, userID) => {
 		event.preventDefault()
 
-		const {deleteUserAction} = this.props
+		const { deleteUserAction } = this.props
 		deleteUserAction(userID, this.props.authenticationReducer.accessToken)
 	}
 
-	render(){
+	render() {
 
-		return(
+		const users = this.props.userManagementReducer.allUsers.map((user, i) => {
+			return (
+				<tr key={i} id={"UserItem" + user.userID}>
+					<td>{user.userID}</td>
+					<td>{user.userName}</td>
+					<td>{user.isAdministrator ? 'Ja' : 'Nein'}</td>
+					<td>
+						<Button id={"EditButton" + user.userID} className="custom-mr" variant="custom" onClick={e => this.showUpdateModal(e, user)}><i className="fa-solid fa-pencil"></i></Button>
+						<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.handleDeleteUser(event, user.userID)}><i className="fa-solid fa-trash-can"></i></Button>
+					</td>
+				</tr>
+			)
+		})
+
+		return (
 			<>
-			<main className="page-content p-3">
-				<h1>Nutzerverwaltung</h1>
+				<main className="page-content p-3">
+					<h1>Nutzerverwaltung</h1>
 
-				<UserCreateModal />
+					<UserCreateModal />
 
-				<Table responsive striped borderless>
-					<thead>
-						<tr>
-							<th>User ID</th>
-							<th>Username</th>
-							<th>Administrator</th>
-							<th>Aktionen</th>
-						</tr>
-					</thead>
-					<tbody>
-						{this.props.userManagementReducer.allUsers.map((user, i) => {
-							return (
-								<tr key={i} id={"UserItem" + user.userID}>
-									<td>{user.userID}</td>
-									<td>{user.userName}</td>
-									<td>{user.isAdministrator ? 'Ja' : 'Nein'}</td>
-									<td>
-										<UserUpdateModal user={user} />
-										<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.handleDeleteUser(event, user.userID)}><i className="fa-solid fa-trash-can"></i></Button>
-									</td>
-								</tr>
-							)
-						})}
-					</tbody>
-				</Table>
-			</main>
-
+					<Table responsive striped borderless>
+						<thead>
+							<tr>
+								<th>User ID</th>
+								<th>Username</th>
+								<th>Administrator</th>
+								<th>Aktionen</th>
+							</tr>
+						</thead>
+						<tbody>
+							{users}
+						</tbody>
+					</Table>
+				</main>
+				{this.props.userManagementReducer.showUpdateModal ? <UserUpdateModal /> : ''}
 			</>
 		)
-	}	
+	}
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	populateAllUsersAction: userManagementActions.getPopulateAllUsersAction,
 	deleteUserAction: userManagementActions.deleteUser,
-	updateCurrentUserDataAction: getUpdateCurrentUserDataAction
+	updateCurrentUserDataAction: getUpdateCurrentUserDataAction,
+	showUpdateModalAction: userManagementActions.getShowUpdateModalAction
 }, dispatch)
 
 const ConnectedUserManagementWidget = connect(mapStateToProps, mapDispatchToProps)(UserManagement)

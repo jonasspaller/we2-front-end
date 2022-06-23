@@ -84,7 +84,7 @@ class UserSessionWidget extends Component {
 						</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						<Form>
+						<Form onSubmit={this.handleSubmit}>
 							<Form.Group>
 								<Form.Label>Username</Form.Label>
 								<Form.Control id="LoginUserIDInput" className="mb-3" type="text" name="userID" placeholder="Username" onChange={this.handleChange} autoFocus />
