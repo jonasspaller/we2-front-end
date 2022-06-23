@@ -110,7 +110,7 @@ function handleFetchResponse(res) {
 	})
 }
 
-function logout() {
+export function logout() {
 	return dispatch => {
 		dispatch(getLogoutUserAction())
 	}

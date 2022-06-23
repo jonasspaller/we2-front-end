@@ -111,7 +111,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	showLoginDialogAction: authenticationActions.getShowLoginDialogAction,
 	hideLoginDialogAction: authenticationActions.getHideLoginDialogAction,
 	authenticateUserAction: authenticationActions.authenticateUser,
-	logoutAction: authenticationActions.getLogoutUserAction,
+	logoutAction: authenticationActions.logout,
 	errorAction: authenticationActions.getAuthenticationErrorAction
 }, dispatch)
 
