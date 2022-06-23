@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Button, Table } from "react-bootstrap";
 import { connect } from "react-redux";
-import { deleteUser } from "../../redux/user/UserManagementActions";
+import { deleteUser, getAllUsers } from "../../redux/user/UserManagementActions";
 import { getUpdateCurrentUserDataAction } from "../../redux/authentication/AuthenticationActions"
 import UserUpdateModal from "./UserUpdateModal";
 import { bindActionCreators } from "redux";
@@ -23,22 +23,11 @@ class UserManagement extends Component {
 	}
 
 	componentDidMount(){
-
-		// build request to rest api for showing all users
-		const requestOptions = {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + this.props.authenticationReducer.accessToken
-			}
-		}
-
-		// send request
-		fetch("https://localhost/users", requestOptions)
-			.then(response => response.json())
-			.then(users => {
+		getAllUsers(this.props.authenticationReducer.accessToken, (err, users) => {
+			if(!err && users){
 				this.setState({users: users})
-			})
+			}
+		})
 	}
 
 	handleUpdateUser = (updatedUser) => {

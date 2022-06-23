@@ -1,4 +1,5 @@
 import jwtDecode from "jwt-decode"
+import config from "../../config.json"
 
 export const SHOW_LOGIN_DIALOG = "SHOW_LOGIN_DIALOG"
 export const HIDE_LOGIN_DIALOG = "HIDE_LOGIN_DIALOG"
@@ -75,7 +76,7 @@ export function authenticateUser(userID, password) {
 		}
 
 		// send request
-		fetch("https://localhost/authenticate", requestOptions)
+		fetch(config.SERVER_URL + "/authenticate", requestOptions)
 			.then(handleFetchResponse)
 			.then(fetchReturn => {
 				const action = getAuthenticationSuccessAction(fetchReturn.userObject, fetchReturn.accessToken)

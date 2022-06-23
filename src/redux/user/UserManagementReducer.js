@@ -12,7 +12,8 @@ export default function UserManagementReducer(state = initialState, action){
 		case userManagementActions.SHOW_USER_CREATE_MODAL:
 			return {
 				...state,
-				showUserCreateModal: true
+				showUserCreateModal: true,
+				saveError: null
 			}
 		case userManagementActions.HIDE_USER_CREATE_MODAL:
 			return {
@@ -28,7 +29,8 @@ export default function UserManagementReducer(state = initialState, action){
 			return {
 				...state,
 				showUserCreateModal: false,
-				savingPending: false
+				savingPending: false,
+				saveError: null
 			}
 		case userManagementActions.CREATION_ERROR:
 			return {

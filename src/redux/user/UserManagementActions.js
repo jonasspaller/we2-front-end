@@ -1,3 +1,5 @@
+import config from "../../config.json"
+
 export const SHOW_USER_CREATE_MODAL = "SHOW_USER_CREATE_MODAL"
 export const HIDE_USER_CREATE_MODAL = "HIDE_USER_CREATE_MODAL"
 
@@ -36,6 +38,28 @@ export function getCreationErrorAction(error){
 	}
 }
 
+export function getAllUsers(token, callback){
+
+	// build request to rest api for showing all users
+	const requestOptions = {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'Bearer ' + token
+		}
+	}
+
+	// send request
+	fetch(config.SERVER_URL + "/users", requestOptions)
+		.then(response => response.json())
+		.then(users => {
+			callback(null, users)
+		})
+		.catch(err => {
+			callback(err)
+		})
+}
+
 export function createNewUser(newUserID, newUserName, newPassword, newIsAdministrator, token){
 
 	return dispatch => {
@@ -62,7 +86,7 @@ export function createNewUser(newUserID, newUserName, newPassword, newIsAdminist
 		}
 
 		// send request
-		fetch("https://localhost/users", requestOptions)
+		fetch(config.SERVER_URL + "/users", requestOptions)
 			.then(handleFetchResponse)
 			.then(() => {
 				const action = getCreationSuccessAction()
@@ -95,7 +119,7 @@ export function updateUser(userID, userName, password, isAdministrator, token, c
 	}
 
 	// send request
-	fetch("https://localhost/users/" + userID, requestOptions)
+	fetch(config.SERVER_URL + "/users" + userID, requestOptions)
 		.then(handleFetchResponse)
 		.then(resBody => {
 			callback(null, resBody)
@@ -119,7 +143,7 @@ export function deleteUser(userID, token, callback) {
 	}
 
 	// send request
-	fetch("https://localhost/users/" + userID, requestOptions)
+	fetch(config.SERVER_URL + "/users" + userID, requestOptions)
 		.then(res => {
 			if (res.ok) {
 				return callback(null, true)
