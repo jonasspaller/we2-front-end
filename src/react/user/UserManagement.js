@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Col, Container, Form, InputGroup, Row, Table } from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -13,6 +13,13 @@ const mapStateToProps = state => {
 }
 
 class UserManagement extends Component {
+
+	constructor(props) {
+		super(props)
+		this.state = {
+			searchquery: ''
+		}
+	}
 
 	componentDidMount() {
 
@@ -34,7 +41,7 @@ class UserManagement extends Component {
 	askDelete = (e) => {
 		e.preventDefault()
 
-		const {showConfirmAction} = this.props
+		const { showConfirmAction } = this.props
 		showConfirmAction()
 	}
 
@@ -43,9 +50,24 @@ class UserManagement extends Component {
 		deleteUserAction(userID, this.props.authenticationReducer.accessToken)
 	}
 
+	handleSearch = (e) => {
+		const target = e.target
+		const name = target.name
+		const value = target.value
+		this.setState({ [name]: value })
+	}
+
 	render() {
 
-		const users = this.props.userManagementReducer.allUsers.map((user, i) => {
+		const users = this.props.userManagementReducer.allUsers.filter(user => {
+			if (this.state.searchquery === "") {
+				return user
+			} else if (user.userID.toLowerCase().includes(this.state.searchquery.toLowerCase())) {
+				return user
+			} else {
+				return null
+			}
+		}).map((user, i) => {
 			return (
 				<tr key={i} id={"UserItem" + user.userID}>
 					<td>{user.userID}</td>
@@ -63,12 +85,27 @@ class UserManagement extends Component {
 		return (
 			<>
 				<main className="page-content p-3">
-					<h1>Nutzerverwaltung</h1>
-
-					<Button variant="custom" id="OpenCreateUserDialogButton" onClick={e => this.showUserModal(e, null)} >
-						<i className="fa-solid fa-plus custom-mr"></i>
-						Neuer Nutzer
-					</Button>
+					<Container fluid>
+						<Row className="align-items-center">
+							<Col xs="auto">
+								<h1>Nutzerverwaltung</h1>
+							</Col>
+							<Col xs="auto">
+								<Button variant="custom" id="OpenCreateUserDialogButton" onClick={e => this.showUserModal(e, null)} >
+									<i className="fa-solid fa-plus custom-mr"></i>
+									Neuer Nutzer
+								</Button>
+							</Col>
+							<Col >
+								<InputGroup className="w-50">
+									<InputGroup.Text>
+										<i className="fa-solid fa-magnifying-glass"></i>
+									</InputGroup.Text>
+									<Form.Control type="search" name="searchquery" placeholder="Nach User-ID suchen" onChange={this.handleSearch} />
+								</InputGroup>
+							</Col>
+						</Row>
+					</Container>
 
 					<Table responsive striped borderless>
 						<thead>
