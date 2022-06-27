@@ -16,8 +16,8 @@ class UserUpdateModal extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			userID: '',
-			userName: null,
+			userID: this.props.userManagementReducer.userToUpdate ? this.props.userManagementReducer.userToUpdate.userID : '',
+			userName: this.props.userManagementReducer.userToUpdate ? this.props.userManagementReducer.userToUpdate.userName : '',
 			password: null,
 			isAdministrator: this.props.userManagementReducer.userToUpdate ? this.props.userManagementReducer.userToUpdate.isAdministrator : false
 		}
@@ -104,11 +104,11 @@ class UserUpdateModal extends Component {
 						<Form>
 							<Form.Group>
 								<Form.Label>User-ID</Form.Label>
-								<Form.Control id="UserIDInput" className="mb-3" type="text" name="userID" placeholder="User-ID" onChange={this.handleChange} disabled={this.props.userManagementReducer.userToUpdate} />
+								<Form.Control id="UserIDInput" className="mb-3" type="text" name="userID" value={this.state.userID} placeholder="User-ID" onChange={this.handleChange} disabled={this.props.userManagementReducer.userToUpdate} />
 							</Form.Group>
 							<Form.Group>
 								<Form.Label>Username</Form.Label>
-								<Form.Control id="UserNameInput" className="mb-3" type="text" name="userName" placeholder={this.props.userManagementReducer.userToUpdate ? this.props.userManagementReducer.userToUpdate.userName : 'Nutzername'} onChange={this.handleChange} />
+								<Form.Control id="UserNameInput" className="mb-3" type="text" name="userName" value={this.state.userName} placeholder="Nutzername" onChange={this.handleChange} />
 							</Form.Group>
 							<Form.Group>
 								<Form.Label>Password</Form.Label>
