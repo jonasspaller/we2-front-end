@@ -5,14 +5,20 @@ import { bindActionCreators } from "redux"
 import { Button, Col, Container, Form, InputGroup, Row, Table } from "react-bootstrap"
 
 import * as forumThreadActions from "../../redux/forum/ForumThreadActions"
+import CreateThreadModal from "./CreateThreadModal"
 
 const mapStateToProps = state => {
 	return state
 }
 
+const mapDispatchToProps = dispatch => bindActionCreators({
+	populateAllThreadsAction: forumThreadActions.getPopulateAllThreadsAction,
+	showCreateModalAction: forumThreadActions.getShowCreateModalAction
+}, dispatch)
+
 class ForumPage extends Component {
 
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.state = {
 			searchquery: ''
@@ -36,7 +42,14 @@ class ForumPage extends Component {
 		this.setState({ [name]: value })
 	}
 
-	render(){
+	showCreateModal = (e) => {
+		e.preventDefault()
+
+		const { showCreateModalAction } = this.props
+		showCreateModalAction()
+	}
+
+	render() {
 
 		const forumThreads = this.props.forumThreadReducer.forumThreads.filter(thread => {
 			if (this.state.searchquery === "") {
@@ -62,14 +75,15 @@ class ForumPage extends Component {
 		})
 
 		return (
-			<main className="page-content p-3">
-				<Container fluid>
+			<>
+				<main className="page-content p-3">
+					<Container fluid>
 						<Row className="align-items-center">
 							<Col xs="auto">
 								<h1>Foren&uuml;bersicht</h1>
 							</Col>
 							<Col xs="auto">
-								<Button variant="custom" id="OpenCreateUserDialogButton">
+								<Button variant="custom" id="OpenCreateForumThreadDialogButton" onClick={this.showCreateModal}>
 									<i className="fa-solid fa-plus custom-mr"></i>
 									Neuer Thread
 								</Button>
@@ -98,13 +112,11 @@ class ForumPage extends Component {
 							{forumThreads}
 						</tbody>
 					</Table>
-			</main>
+				</main>
+				{this.props.forumThreadReducer.showCreateModal ? <CreateThreadModal /> : ''}
+			</>
 		)
 	}
 }
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-	populateAllThreadsAction: forumThreadActions.getPopulateAllThreadsAction
-}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForumPage)
