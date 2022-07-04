@@ -7,6 +7,7 @@ import { Button, Col, Container, Form, InputGroup, Row, Table } from "react-boot
 import * as forumThreadActions from "../../redux/forum/ForumThreadActions"
 import CreateThreadModal from "./CreateThreadModal"
 import EditThreadModal from "./EditThreadModal"
+import ConfirmThreadDelete from "./ConfirmThreadDelete"
 
 const mapStateToProps = state => {
 	return state
@@ -15,7 +16,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
 	populateAllThreadsAction: forumThreadActions.getPopulateAllThreadsAction,
 	showCreateModalAction: forumThreadActions.getShowCreateModalAction,
-	showEditModalAction: forumThreadActions.getShowEditModalAction
+	showEditModalAction: forumThreadActions.getShowEditModalAction,
+	showConfirmAction: forumThreadActions.getShowConfirmAction,
+	deleteThreadAction: forumThreadActions.deleteThread
 }, dispatch)
 
 class ForumPage extends Component {
@@ -58,6 +61,18 @@ class ForumPage extends Component {
 		showEditModalAction(thread)
 	}
 
+	askDelete = (e) => {
+		e.preventDefault()
+
+		const { showConfirmAction } = this.props
+		showConfirmAction()
+	}
+
+	handleDelete = (threadID) => {
+		const { deleteThreadAction } = this.props
+		deleteThreadAction(threadID, this.props.authenticationReducer.accessToken)
+	}
+
 	render() {
 
 		const forumThreads = this.props.forumThreadReducer.forumThreads.filter(thread => {
@@ -76,8 +91,8 @@ class ForumPage extends Component {
 					<td>{thread.ownerID}</td>
 					<td>
 						<Button id={"EditFormThreadButton" + thread._id} className="custom-mr" variant="custom" onClick={e => this.showEditThreadModal(e, thread)}><i className="fa-solid fa-pencil"></i></Button>
-						{/*<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.askDelete(event, user.userID)}><i className="fa-solid fa-trash-can"></i></Button>*/}
-						{/*{this.props.userManagementReducer.showDeleteConfirm ? <Confirm callBack={() => this.handleDelete(user.userID)} /> : ''}*/}
+						<Button id={"DeleteForumThreadButton" + thread._id} variant="danger" onClick={this.askDelete}><i className="fa-solid fa-trash-can"></i></Button>
+						{this.props.forumThreadReducer.showDeleteThreadConfirm ? <ConfirmThreadDelete callBack={() => this.handleDelete(thread._id)} /> : ''}
 					</td>
 				</tr>
 			)

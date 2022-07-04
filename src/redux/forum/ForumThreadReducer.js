@@ -7,6 +7,7 @@ const initialState = {
 	pending: false,
 	showEditModal: false,
 	threadToEdit: null,
+	showDeleteThreadConfirm: false
 }
 
 export default function ForumThreadReducer(state = initialState, action) {
@@ -72,6 +73,21 @@ export default function ForumThreadReducer(state = initialState, action) {
 				...state,
 				pending: false,
 				error: action.updateError
+			}
+		case forumThreadActions.DELETE_THREAD:
+			return {
+				...state,
+				forumThreads: state.forumThreads.filter(thread => thread._id !== action.threadToDelete)
+			}
+		case forumThreadActions.SHOW_DELETE_THREAD_CONFIRM:
+			return {
+				...state,
+				showDeleteThreadConfirm: true
+			}
+		case forumThreadActions.HIDE_DELETE_THREAD_CONFIRM:
+			return {
+				...state,
+				showDeleteThreadConfirm: false
 			}
 		default:
 			return state

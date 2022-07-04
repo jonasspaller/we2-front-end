@@ -16,6 +16,10 @@ export const HIDE_EDIT_THREAD_MODAL = "HIDE_EDIT_THREAD_MODAL"
 export const THREAD_UPDATE_SUCCESS = "THREAD_UPDATE_SUCCESS"
 export const THREAD_UPDATE_ERROR = "THREAD_UPDATE_ERROR"
 
+export const DELETE_THREAD = "DELETE_THREAD"
+export const SHOW_DELETE_THREAD_CONFIRM = "SHOW_DELETE_THREAD_CONFIRM"
+export const HIDE_DELETE_THREAD_CONFIRM = "HIDE_DELETE_THREAD_CONFIRM"
+
 export function getPopulateAllThreadsAction(allThreads) {
 	return {
 		type: POPULATE_FORUMTHREADS_TO_STATE,
@@ -79,6 +83,26 @@ export function getUpdateErrorAction(error){
 	return {
 		type: THREAD_UPDATE_ERROR,
 		updateError: error
+	}
+}
+
+export function getDeleteThreadAction(threadID){
+	return {
+		type: DELETE_THREAD,
+		threadToDelete: threadID
+	}
+}
+
+export function getShowConfirmAction(){
+	return {
+		type: SHOW_DELETE_THREAD_CONFIRM
+	}
+}
+
+export function getHideConfirmAction(){
+	return {
+		type: HIDE_DELETE_THREAD_CONFIRM,
+		confirmQuestion: null
 	}
 }
 
@@ -168,6 +192,32 @@ export function updateForumThread(id, name, description, token) {
 			.catch(error => {
 				const action = getUpdateErrorAction(error)
 				dispatch(action)
+			})
+	}
+}
+
+export function deleteThread(threadID, token) {
+
+	return dispatch => {
+
+		// build request to rest api for deleting thread
+		const requestOptions = {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + token
+			}
+		}
+
+		// send request
+		fetch(config.SERVER_URL + "/forumThreads/" + threadID, requestOptions)
+			.then(handleFetchResponse)
+			.then(() => {
+				const action = getDeleteThreadAction(threadID)
+				dispatch(action)
+			})
+			.catch(error => {
+				console.log(error)
 			})
 	}
 }

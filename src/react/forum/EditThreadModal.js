@@ -91,8 +91,8 @@ class EditThreadModal extends Component {
 					<Modal.Footer>
 						{errorHint}
 						{this.props.pending ? <LoadingSpinner /> : ''}
-						<Button id="CancelCreateForumThreadButton" variant="danger" type="cancel" onClick={this.handleClose}>Abbrechen</Button>
-						<Button id="CreateForumThreadButton" variant="custom" type="submit" onClick={this.handleSubmit}>Speichern</Button>
+						<Button id="CancelEditForumThreadButton" variant="danger" type="cancel" onClick={this.handleClose}>Abbrechen</Button>
+						<Button id="SaveForumThreadButton" variant="custom" type="submit" onClick={this.handleSubmit}>Speichern</Button>
 					</Modal.Footer>
 				</Modal>
 			</>
