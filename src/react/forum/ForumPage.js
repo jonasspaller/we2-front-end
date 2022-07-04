@@ -6,6 +6,7 @@ import { Button, Col, Container, Form, InputGroup, Row, Table } from "react-boot
 
 import * as forumThreadActions from "../../redux/forum/ForumThreadActions"
 import CreateThreadModal from "./CreateThreadModal"
+import EditThreadModal from "./EditThreadModal"
 
 const mapStateToProps = state => {
 	return state
@@ -13,7 +14,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	populateAllThreadsAction: forumThreadActions.getPopulateAllThreadsAction,
-	showCreateModalAction: forumThreadActions.getShowCreateModalAction
+	showCreateModalAction: forumThreadActions.getShowCreateModalAction,
+	showEditModalAction: forumThreadActions.getShowEditModalAction
 }, dispatch)
 
 class ForumPage extends Component {
@@ -49,6 +51,13 @@ class ForumPage extends Component {
 		showCreateModalAction()
 	}
 
+	showEditThreadModal = (e, thread) => {
+		e.preventDefault()
+
+		const { showEditModalAction } = this.props
+		showEditModalAction(thread)
+	}
+
 	render() {
 
 		const forumThreads = this.props.forumThreadReducer.forumThreads.filter(thread => {
@@ -65,11 +74,11 @@ class ForumPage extends Component {
 					<td>{thread.name}</td>
 					<td>{thread.description}</td>
 					<td>{thread.ownerID}</td>
-					{/*<td>
-						<Button id={"EditButton" + user.userID} className="custom-mr" variant="custom" onClick={e => this.showUserModal(e, user)}><i className="fa-solid fa-pencil"></i></Button>
-						<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.askDelete(event, user.userID)}><i className="fa-solid fa-trash-can"></i></Button>
-						{this.props.userManagementReducer.showDeleteConfirm ? <Confirm callBack={() => this.handleDelete(user.userID)} /> : ''}
-					</td>*/}
+					<td>
+						<Button id={"EditFormThreadButton" + thread._id} className="custom-mr" variant="custom" onClick={e => this.showEditThreadModal(e, thread)}><i className="fa-solid fa-pencil"></i></Button>
+						{/*<Button id={"DeleteButton" + user.userID} variant="danger" onClick={event => this.askDelete(event, user.userID)}><i className="fa-solid fa-trash-can"></i></Button>*/}
+						{/*{this.props.userManagementReducer.showDeleteConfirm ? <Confirm callBack={() => this.handleDelete(user.userID)} /> : ''}*/}
+					</td>
 				</tr>
 			)
 		})
@@ -114,6 +123,7 @@ class ForumPage extends Component {
 					</Table>
 				</main>
 				{this.props.forumThreadReducer.showCreateModal ? <CreateThreadModal /> : ''}
+				{this.props.forumThreadReducer.showEditModal ? <EditThreadModal /> : ''}
 			</>
 		)
 	}
