@@ -10,6 +10,7 @@ import Footer from './react/components/Footer'
 import UserManagement from './react/user/UserManagement'
 import ActivityBar from './react/components/ActivityBar'
 import AccessDenied from './react/components/AccessDenied'
+import ForumPage from './react/forum/ForumPage'
 
 const mapStateToProps = state => {
 	return state
@@ -29,6 +30,7 @@ class App extends Component {
 				<Routes>
 					<Route path="/" element={token ? <PrivatePage /> : <PublicPage />} />
 					<Route path="/userManagement" element={user && user.isAdministrator ? <UserManagement /> : <AccessDenied />} />
+					<Route path="/forumPage" element={user ? <ForumPage /> : <AccessDenied />} />
 				</Routes>
 				
 				<Footer />

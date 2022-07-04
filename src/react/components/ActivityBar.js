@@ -24,6 +24,8 @@ class ActivityBar extends Component {
 					<Navbar.Collapse id="basic-navbar-nav">
 						<Nav className="me-auto">
 							{user.isAdministrator ? <Link to="/userManagement" id="OpenUserManagementButton" className="nav-link"><i className="fa-solid fa-user-group custom-mr"></i>Nutzerverwaltung</Link> : ''}
+							<Link to="/forumPage" id="OpenForumThreadOverviewButton" className="nav-link"><i className="fa-solid fa-comments custom-mr"></i>Foren&uuml;bersicht</Link>
+							
 						</Nav>
 					</Navbar.Collapse>
 				</Container>
