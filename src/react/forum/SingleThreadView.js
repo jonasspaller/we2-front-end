@@ -4,16 +4,19 @@ import { bindActionCreators } from "redux";
 
 import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap"
 
-import { getAllMessagesFromThread } from "../../redux/forum/ForumThreadActions";
+import { getAllMessagesFromThread, getShowCreateMessageModalAction, getPopulateAllMessagesAction } from "../../redux/forum/ForumThreadActions";
+import CreateMessageModal from "./CreateMessageModal";
 
 const mapStateToProps = state => {
 	return {
-
+		showCreateMessageModal: state.forumThreadReducer.showCreateMessageModal,
+		messages: state.forumThreadReducer.threadMessages
 	}
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-
+	populateMessagesToState: getPopulateAllMessagesAction,
+	showCreateMessageModalAction: getShowCreateMessageModalAction
 }, dispatch)
 
 class SingleThreadView extends Component {
@@ -33,9 +36,10 @@ class SingleThreadView extends Component {
 			if (err) {
 				this.setState({ error: err })
 			} else if (!messages) {
-				this.setState({ error: "Es wurden keine Nachrichten gefunden." })
+				this.setState({ error: "Es wurden keine Nachrichten gefunden" })
 			} else {
-				this.setState({ messages: messages })
+				const { populateMessagesToState } = this.props
+				populateMessagesToState(messages)
 			}
 		})
 	}
@@ -47,6 +51,13 @@ class SingleThreadView extends Component {
 		this.setState({ [name]: value })
 	}
 
+	showCreateModal = (e) => {
+		e.preventDefault()
+
+		const { showCreateMessageModalAction } = this.props
+		showCreateMessageModalAction()
+	}
+
 	render() {
 
 		let errorHint
@@ -54,7 +65,7 @@ class SingleThreadView extends Component {
 			errorHint = <p className="text-danger">{this.state.error}</p>
 		}
 
-		const threadMessages = this.state.messages.filter(message => {
+		const threadMessages = this.props.messages.filter(message => {
 			if (this.state.searchquery === "") {
 				return message
 			} else if (message.title.toLowerCase().includes(this.state.searchquery.toLowerCase())) {
@@ -109,6 +120,7 @@ class SingleThreadView extends Component {
 						{threadMessages}
 					</Container>
 				</main>
+				{this.props.showCreateMessageModal ? <CreateMessageModal thread={this.props.thread} /> : ''}
 			</>
 		)
 	}

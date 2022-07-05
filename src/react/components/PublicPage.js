@@ -6,7 +6,7 @@ class PublicPage extends Component {
 
 	render() {
 		return (
-			<main className="page-content-white" id="LandingPage">
+			<main className="page-content page-content-white" id="LandingPage">
 				<Container fluid className="col-xxl-8 px-4 py-5">
 					<Row className="align-items-center g-5 py-5">
 						<Col>

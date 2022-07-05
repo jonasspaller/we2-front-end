@@ -23,6 +23,14 @@ export const HIDE_DELETE_THREAD_CONFIRM = "HIDE_DELETE_THREAD_CONFIRM"
 export const SHOW_SINGLE_THREAD = "SHOW_SINGLE_THREAD"
 export const SHOW_THREAD_OVERVIEW = "SHOW_THREAD_OVERVIEW"
 
+export const SHOW_CREATE_MESSAGE_MODAL = "SHOW_CREATE_MESSAGE_MODAL"
+export const HIDE_CREATE_MESSAGE_MODAL = "HIDE_CREATE_MESSAGE_MODAL"
+
+export const CREATE_MESSAGE_SUCCESS = "CREATE_MESSAGE_SUCCESS"
+export const CREATE_MESSAGE_ERROR = "CREATE_MESSAGE_ERROR"
+
+export const POPULATE_FORUMMESSAGES_TO_STATE = "POPULATE_FORUMMESSAGES_TO_STATE"
+
 export function getPopulateAllThreadsAction(allThreads) {
 	return {
 		type: POPULATE_FORUMTHREADS_TO_STATE,
@@ -119,6 +127,39 @@ export function getShowSingleThreadAction(thread){
 export function getShowThreadOverviewAction(){
 	return {
 		type: SHOW_THREAD_OVERVIEW
+	}
+}
+
+export function getShowCreateMessageModalAction(){
+	return {
+		type: SHOW_CREATE_MESSAGE_MODAL
+	}
+}
+
+export function getHideCreateMessageModalAction(){
+	return {
+		type: HIDE_CREATE_MESSAGE_MODAL
+	}
+}
+
+export function getCreateMessageSuccessAction(message){
+	return {
+		type: CREATE_MESSAGE_SUCCESS,
+		message: message
+	}
+}
+
+export function getCreateMessageErrorAction(error){
+	return {
+		type: CREATE_MESSAGE_ERROR,
+		error: error
+	}
+}
+
+export function getPopulateAllMessagesAction(allMessages) {
+	return {
+		type: POPULATE_FORUMMESSAGES_TO_STATE,
+		messages: allMessages
 	}
 }
 
@@ -257,6 +298,46 @@ export function getAllMessagesFromThread(threadID, callback){
 		.catch(error => {
 			callback(error)
 		})
+}
+
+export function createMessage(threadID, title, text, token){
+
+	return dispatch => {
+
+		// check if required title is given
+		if(!title) return dispatch(getCreateMessageErrorAction("Ein Text wird ben&ouml;tigt"))
+
+		// queue pending action
+		dispatch(getPendingAction())
+
+		// compose request body
+		let reqBody = {}
+		reqBody.forumThreadID = threadID
+		if (title) reqBody.title = title
+		reqBody.text = text
+
+		// build request to rest api for updating thread
+		const requestOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + token
+			},
+			body: JSON.stringify(reqBody)
+		}
+
+		// send request
+		fetch(config.SERVER_URL + "/forumMessages", requestOptions)
+			.then(handleFetchResponse)
+			.then(resBody => {
+				const action = getCreateMessageSuccessAction(resBody)
+				dispatch(action)
+			})
+			.catch(error => {
+				const action = getCreateMessageErrorAction(error)
+				dispatch(action)
+			})
+	}
 }
 
 function handleFetchResponse(res) {

@@ -8,7 +8,9 @@ const initialState = {
 	showEditModal: false,
 	threadToEdit: null,
 	showDeleteThreadConfirm: false,
-	showSingleThread: null
+	showSingleThread: null,
+	showCreateMessageModal: false,
+	threadMessages: []
 }
 
 export default function ForumThreadReducer(state = initialState, action) {
@@ -98,7 +100,36 @@ export default function ForumThreadReducer(state = initialState, action) {
 		case forumThreadActions.SHOW_THREAD_OVERVIEW:
 			return {
 				...state,
-				showSingleThread: null
+				showSingleThread: null,
+				threadMessages: []
+			}
+		case forumThreadActions.SHOW_CREATE_MESSAGE_MODAL:
+			return {
+				...state,
+				showCreateMessageModal: true
+			}
+		case forumThreadActions.HIDE_CREATE_MESSAGE_MODAL:
+			return {
+				...state,
+				showCreateMessageModal: false
+			}
+		case forumThreadActions.CREATE_MESSAGE_SUCCESS:
+			return {
+				...state,
+				showCreateMessageModal: false,
+				pending: false,
+				error: null,
+				threadMessages: state.threadMessages.concat(action.message)
+			}
+		case forumThreadActions.CREATE_MESSAGE_ERROR:
+			return {
+				...state,
+				error: action.error
+			}
+		case forumThreadActions.POPULATE_FORUMMESSAGES_TO_STATE:
+			return {
+				...state,
+				threadMessages: action.messages
 			}
 		default:
 			return state
