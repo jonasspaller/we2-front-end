@@ -84,8 +84,8 @@ class UserManagement extends Component {
 
 		return (
 			<>
-				<main className="page-content p-3">
-					<Container fluid>
+				<main className="page-content">
+					<Container fluid className="content-header p-3">
 						<Row className="align-items-center">
 							<Col xs="auto">
 								<h1>Nutzerverwaltung</h1>
@@ -107,19 +107,21 @@ class UserManagement extends Component {
 						</Row>
 					</Container>
 
-					<Table responsive striped borderless>
-						<thead>
-							<tr>
-								<th>User ID</th>
-								<th>Username</th>
-								<th>Administrator</th>
-								<th>Aktionen</th>
-							</tr>
-						</thead>
-						<tbody>
-							{users}
-						</tbody>
-					</Table>
+					<Container className="js-subcontent">
+						<Table responsive striped borderless>
+							<thead>
+								<tr>
+									<th>User ID</th>
+									<th>Username</th>
+									<th>Administrator</th>
+									<th>Aktionen</th>
+								</tr>
+							</thead>
+							<tbody>
+								{users}
+							</tbody>
+						</Table>
+					</Container>
 				</main>
 				{this.props.userManagementReducer.showUserModal ? <UserModal /> : ''}
 			</>

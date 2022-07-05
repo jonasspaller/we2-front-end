@@ -7,7 +7,8 @@ const initialState = {
 	pending: false,
 	showEditModal: false,
 	threadToEdit: null,
-	showDeleteThreadConfirm: false
+	showDeleteThreadConfirm: false,
+	showSingleThread: null
 }
 
 export default function ForumThreadReducer(state = initialState, action) {
@@ -88,6 +89,16 @@ export default function ForumThreadReducer(state = initialState, action) {
 			return {
 				...state,
 				showDeleteThreadConfirm: false
+			}
+		case forumThreadActions.SHOW_SINGLE_THREAD:
+			return {
+				...state,
+				showSingleThread: action.thread
+			}
+		case forumThreadActions.SHOW_THREAD_OVERVIEW:
+			return {
+				...state,
+				showSingleThread: null
 			}
 		default:
 			return state

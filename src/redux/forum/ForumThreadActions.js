@@ -20,6 +20,9 @@ export const DELETE_THREAD = "DELETE_THREAD"
 export const SHOW_DELETE_THREAD_CONFIRM = "SHOW_DELETE_THREAD_CONFIRM"
 export const HIDE_DELETE_THREAD_CONFIRM = "HIDE_DELETE_THREAD_CONFIRM"
 
+export const SHOW_SINGLE_THREAD = "SHOW_SINGLE_THREAD"
+export const SHOW_THREAD_OVERVIEW = "SHOW_THREAD_OVERVIEW"
+
 export function getPopulateAllThreadsAction(allThreads) {
 	return {
 		type: POPULATE_FORUMTHREADS_TO_STATE,
@@ -103,6 +106,19 @@ export function getHideConfirmAction(){
 	return {
 		type: HIDE_DELETE_THREAD_CONFIRM,
 		confirmQuestion: null
+	}
+}
+
+export function getShowSingleThreadAction(thread){
+	return {
+		type: SHOW_SINGLE_THREAD,
+		thread: thread
+	}
+}
+
+export function getShowThreadOverviewAction(){
+	return {
+		type: SHOW_THREAD_OVERVIEW
 	}
 }
 
@@ -220,6 +236,27 @@ export function deleteThread(threadID, token) {
 				console.log(error)
 			})
 	}
+}
+
+export function getAllMessagesFromThread(threadID, callback){
+
+	// build request to rest api for deleting thread
+	const requestOptions = {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	}
+
+	// send request
+	fetch(config.SERVER_URL + "/forumThreads/" + threadID + "/forumMessages", requestOptions)
+		.then(handleFetchResponse)
+		.then(messages => {
+			messages.length === 0 ? callback(null, null) : callback(null, messages)
+		})
+		.catch(error => {
+			callback(error)
+		})
 }
 
 function handleFetchResponse(res) {
