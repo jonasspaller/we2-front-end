@@ -1,16 +1,14 @@
 import * as authenticationActions from './AuthenticationActions'
 
 const initialState = {
-	loginPending: false,
-	showLoginDialog: false,
-	error: null,
 	user: null,
-	accessToken: null
+	accessToken: null,
+	showLoginDialog: false,
+	loginPending: false,
+	error: null
 }
 
 export default function AuthenticationReducer(state = initialState, action){
-
-	console.log("AuthenticationReducer: " + action.type)
 
 	switch(action.type){
 		case authenticationActions.SHOW_LOGIN_DIALOG:

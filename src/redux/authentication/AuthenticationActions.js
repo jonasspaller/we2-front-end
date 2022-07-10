@@ -1,4 +1,5 @@
 import jwtDecode from "jwt-decode"
+import config from "../../config.json"
 
 export const SHOW_LOGIN_DIALOG = "SHOW_LOGIN_DIALOG"
 export const HIDE_LOGIN_DIALOG = "HIDE_LOGIN_DIALOG"
@@ -66,7 +67,7 @@ export function authenticateUser(userID, password) {
 		}
 
 		// send request
-		fetch("https://localhost/authenticate", requestOptions)
+		fetch(config.SERVER_URL + "/authenticate", requestOptions)
 			.then(handleFetchResponse)
 			.then(fetchReturn => {
 				const action = getAuthenticationSuccessAction(fetchReturn.userObject, fetchReturn.accessToken)
@@ -81,19 +82,26 @@ export function authenticateUser(userID, password) {
 function handleFetchResponse(res) {
 
 	const authHeader = res.headers.get("Authorization")
+	
+	return res.text().then(text => {
 
-	if (!authHeader || !res.ok){
-		logout()
-		return Promise.reject("Etwas ist schiefgelaufen")
-	}
+		const resBody = text && JSON.parse(text)
 
-	const accessToken = authHeader.split(" ")[1]
-	const userObject = jwtDecode(accessToken)
+		if (!authHeader || !res.ok){
+			logout()
+			const error = resBody.Error || res.statusText
+			return Promise.reject(error)
+		} else {
 
-	return { userObject, accessToken }
+			const accessToken = authHeader.split(" ")[1]
+			const userObject = jwtDecode(accessToken)
+		
+			return { userObject, accessToken }
+		}
+	})
 }
 
-function logout() {
+export function logout() {
 	return dispatch => {
 		dispatch(getLogoutUserAction())
 	}

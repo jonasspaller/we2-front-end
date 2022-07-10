@@ -84,7 +84,7 @@ class UserSessionWidget extends Component {
 						</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						<Form>
+						<Form onSubmit={this.handleSubmit}>
 							<Form.Group>
 								<Form.Label>Username</Form.Label>
 								<Form.Control id="LoginUserIDInput" className="mb-3" type="text" name="userID" placeholder="Username" onChange={this.handleChange} autoFocus />
@@ -111,7 +111,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 	showLoginDialogAction: authenticationActions.getShowLoginDialogAction,
 	hideLoginDialogAction: authenticationActions.getHideLoginDialogAction,
 	authenticateUserAction: authenticationActions.authenticateUser,
-	logoutAction: authenticationActions.getLogoutUserAction,
+	logoutAction: authenticationActions.logout,
 	errorAction: authenticationActions.getAuthenticationErrorAction
 }, dispatch)
 

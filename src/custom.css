@@ -7,6 +7,10 @@
 	flex-direction: column;
 }
 
+.js-flex-override {
+	flex: 1 !important;
+}
+
 .page-content {
 	flex: 1;
 }
@@ -19,4 +23,8 @@
 .btn-custom:hover,
 .btn-custom:focus {
 	background-color: rgb(0, 119, 182) !important;
+}
+
+.custom-mr {
+	margin-right: .5rem;
 }
