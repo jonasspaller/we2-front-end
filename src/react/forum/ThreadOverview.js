@@ -107,7 +107,7 @@ class ThreadOverview extends Component {
 					<td>{thread.description}</td>
 					<td>{thread.ownerID}</td>
 					<td>
-						<Button id={"EditFormThreadButton" + thread._id} className="custom-mr" variant="custom" onClick={e => this.showEditThreadModal(e, thread)}><i className="fa-solid fa-pencil"></i></Button>
+						<Button id={"EditForumThreadButton" + thread._id} className="custom-mr" variant="custom" onClick={e => this.showEditThreadModal(e, thread)}><i className="fa-solid fa-pencil"></i></Button>
 						<Button id={"DeleteForumThreadButton" + thread._id} className="custom-mr" variant="danger" onClick={this.askDelete}><i className="fa-solid fa-trash-can"></i></Button>
 						<Button id={"ViewForumThreadButton" + thread._id} variant="custom" onClick={e => this.showSingleThread(e, thread)}><i className="fa-solid fa-angles-right"></i></Button>
 						{this.props.showDeleteThreadConfirm ? <ConfirmThreadDelete callBack={() => this.handleDelete(thread._id)} /> : ''}
